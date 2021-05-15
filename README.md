@@ -13,7 +13,12 @@ Rubik's cube.
 - [Week 1](docs/week_1.md)  
 
 ### Run Tests  
-```pytest -v --cov src```  
+```
+pytest -v --cov-report term --cov=src
+```  
 
 ### Check Code Style  
-```flake8 --exclude=venv --statistics```  
+```
+flake8 . --exclude=venv --count --select=E9,F63,F7,F82 --show-source --statistics
+flake8 . --exclude=venv --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
+```  
