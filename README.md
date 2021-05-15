@@ -8,3 +8,9 @@ Rubik's cube.
 
 ### Weekly reports  
 - [Week 1](docs/week_1.md)  
+
+### Run Tests  
+```pytest -v --cov src```  
+
+### Check Code Style  
+```flake8 --exclude=venv --statistics```  
