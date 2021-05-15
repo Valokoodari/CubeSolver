@@ -1,5 +1,7 @@
 # CubeSolver  
 
+[![Python application](https://github.com/Valokoodari/CubeSolver/actions/workflows/python-app.yml/badge.svg)](https://github.com/Valokoodari/CubeSolver/actions/workflows/python-app.yml)
+
 A Python program to compare a couple of different ways to find a solution for a 
 Rubik's cube.  
 
