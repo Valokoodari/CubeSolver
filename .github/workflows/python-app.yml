@@ -36,4 +36,7 @@ jobs:
     - name: Test with pytest
       run: |
         source venv/bin/activate
-        pytest -v --cov src
+        pytest -v --cov-report term --cov=src
+    - name: Test coverage to Codecov
+        codecov
+  
