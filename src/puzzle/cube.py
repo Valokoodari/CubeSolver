@@ -45,6 +45,12 @@ class Cube:
         for _ in range(26):
             self.twist(randint(0, 5))
 
+    def isSolved(self) -> bool:
+        for face in self.__faces:
+            if not face.isSolved():
+                return False
+        return True
+
     def __str__(self) -> str:
         colors = ('W', 'R', 'B', 'O', 'G', 'Y')
         string = ""

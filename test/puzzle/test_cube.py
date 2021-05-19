@@ -41,11 +41,17 @@ def test_an_untwisted_cube_is_solved():
     assert str(cube) == solved
 
 
-def test_scrambled_cube_is_not_solved():
+def test_a_solved_cube_is_solved():
+    cube = Cube()
+
+    assert cube.isSolved()
+
+
+def test_a_scrambled_cube_is_not_solved():
     cube = Cube()
     cube.scramble()
 
-    assert str(cube) != solved
+    assert not cube.isSolved()
 
 
 def test_checkerboard_pattern_with_single_twists():

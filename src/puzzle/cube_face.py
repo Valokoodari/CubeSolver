@@ -35,3 +35,6 @@ class CubeFace:
             self.__facelets = list(zip(*self.__facelets))[::-1]
 
         self.__facelets = [list(row) for row in self.__facelets]
+
+    def isSolved(self) -> bool:
+        return self.__facelets.count(self.__facelets[0]) == len(self.__facelets)

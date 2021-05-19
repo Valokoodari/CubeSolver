@@ -1,4 +1,6 @@
-venv/
+/.pytest_cache
+/venv
+
 .coverage
 coverage.xml
 test.sh
