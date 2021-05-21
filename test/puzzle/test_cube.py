@@ -75,3 +75,13 @@ def test_cube_in_the_cube_pattern():
     cube.twist_by_notation(cube_in_the_cube_notation)
 
     assert str(cube) == cube_in_the_cube
+
+
+def test_cube_is_solved_after_reset():
+    cube = Cube()
+    cube.scramble()
+    cube.twist(2)
+    cube.twist_by_notation("U2 B D'")
+    cube.reset()
+
+    assert cube.isSolved()

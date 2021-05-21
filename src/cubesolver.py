@@ -10,30 +10,30 @@ class CubeSolver:
         print("0 - Human method (fast, a lot of moves)")
         print("1 - Kociemba's algorithm (slower, fewer moves")
         print("2 - Korf's algorithm (slowest, fewest moves")
-        print("(r - return to the main menu)")
+        print("(r or q - return to the main menu)")
 
         while True:
             method = input("\nCommand: ")
 
-            if method == 'r':
+            if method in ["r", "q"]:
                 print()
                 break
-            elif method == '0':
+            elif method == "0":
                 print("Not implemented yet.")
-            elif method == '1':
+            elif method == "1":
                 print("Not implemented yet.")
-            elif method == '2':
+            elif method == "2":
                 print("Not implemented yet.")
             else:
                 print("Invalid option")
 
     def __play(self):
         print("\nMoves should be given with the basic cube notation.")
-        print("r will return to the main menu.\n")
+        print("r or q will return to the main menu.\n")
         print(f"{self.__cube}\n")
         while True:
-            notation = input("Next move(s): ").upper().strip()
-            if notation == "R":
+            notation = input("Next move(s): ").strip()
+            if notation in ["r", "q"]:
                 print()
                 break
 
@@ -61,6 +61,7 @@ class CubeSolver:
         print("0 - scramble")
         print("1 - solve")
         print("2 - play")
+        print("3 - reset")
         print("q - quit")
 
     def start(self) -> None:
@@ -79,6 +80,9 @@ class CubeSolver:
                 self.__choose_method()
             elif command == '2':
                 self.__play()
+            elif command == '3':
+                print()
+                self.__cube.reset()
             else:
                 print("\nInvalid command!\n")
 

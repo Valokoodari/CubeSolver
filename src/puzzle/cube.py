@@ -3,18 +3,18 @@ from random import randint
 
 
 class Cube:
+    """Neighbors, the affected line number, and -1 if the line should be
+    flipped for every possible turn.
+    """
+    __turns = (((1, 0, 1), (2, 0, 1), (3, 0, 1), (4, 0, 1)),
+               ((0, 3, 1), (4, 5, -1), (5, 3, 1), (2, 3, 1)),
+               ((0, 2, -1), (1, 5, 1), (5, 0, 1), (3, 3, -1)),
+               ((0, 5, 1), (2, 5, 1), (5, 5, 1), (4, 3, -1)),
+               ((0, 0, -1), (3, 5, -1), (5, 2, 1), (1, 3, 1)),
+               ((4, 2, 1), (3, 2, 1), (2, 2, 1), (1, 2, 1)))
+
     def __init__(self):
         self.__faces = [CubeFace(3, i) for i in range(6)]
-
-        """Neighbors, the affected line number, and -1 if the line should be
-        flipped for every possible turn.
-        """
-        self.__turns = (((1, 0, 1), (2, 0, 1), (3, 0, 1), (4, 0, 1)),
-                        ((0, 3, 1), (4, 5, -1), (5, 3, 1), (2, 3, 1)),
-                        ((0, 2, -1), (1, 5, 1), (5, 0, 1), (3, 3, -1)),
-                        ((0, 5, 1), (2, 5, 1), (5, 5, 1), (4, 3, -1)),
-                        ((0, 0, -1), (3, 5, -1), (5, 2, 1), (1, 3, 1)),
-                        ((4, 2, 1), (3, 2, 1), (2, 2, 1), (1, 2, 1)))
 
     def twist(self, face_number: int, clockwise: bool = True) -> None:
         self.__faces[face_number].rotate(clockwise)
@@ -50,6 +50,9 @@ class Cube:
             if not face.isSolved():
                 return False
         return True
+
+    def reset(self) -> None:
+        self.__init__()
 
     def __str__(self) -> str:
         colors = ('W', 'R', 'B', 'O', 'G', 'Y')
