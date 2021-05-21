@@ -4,6 +4,7 @@
 - Implemented the data structure of a cube (5 hours)  
 - Set up GitHub Action and Codecov (1 hour)  
 - UI with almost all of the required features (1 hour)  
+- A simple script for testing and style checking (1 hour)  
 
 ## Progress on the program  
 - It's now possible to play with the Rubik's cube
