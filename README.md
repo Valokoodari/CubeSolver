@@ -12,6 +12,11 @@ Rubik's cube.
 ### Weekly reports  
 - [Week 1](docs/week_1.md)  
 
+### Run the program
+```
+./run.sh
+```
+
 ### Run tests and check style
 ```
 ./test.sh
