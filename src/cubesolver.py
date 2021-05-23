@@ -1,4 +1,7 @@
 from puzzle.cube import Cube
+# from algorithm.simple import Simple
+# from algorithm.kociemba.kociemba import Kociemba
+# from algorithm.korf.korf import Korf
 
 
 class CubeSolver:
