@@ -1,5 +1,5 @@
 from .cube_face import CubeFace
-from random import randint
+from random import choice
 
 
 class Cube:
@@ -41,9 +41,13 @@ class Cube:
                 else:
                     self.twist(face.index(move[0]), False)
 
-    def scramble(self) -> None:
-        for _ in range(26):
-            self.twist(randint(0, 5))
+    def scramble(self) -> str:
+        faces = ["R", "L", "U", "D", "F", "B"]
+        options = ["", "'", "2"]
+        moves = [choice(faces) + choice(options) for _ in range(20)]
+        notation = " ".join(moves)
+        self.twist_by_notation(notation)
+        return notation
 
     def isSolved(self) -> bool:
         for face in self.__faces:

@@ -7,7 +7,7 @@ class CubeSolver:
 
     def __choose_method(self):
         print("Available solving methods:")
-        print("0 - Human method (fast, a lot of moves)")
+        print("0 - Simple method (fast, a lot of moves)")
         print("1 - Kociemba's algorithm (slower, fewer moves")
         print("2 - Korf's algorithm (slowest, fewest moves")
         print("(r or q - return to the main menu)")
@@ -74,8 +74,8 @@ class CubeSolver:
             if command == 'q':
                 break
             elif command == '0':
-                print()
-                self.__cube.scramble()
+                scramble = self.__cube.scramble()
+                print(f"\nScramble: {scramble}\n")
             elif command == '1':
                 self.__choose_method()
             elif command == '2':
