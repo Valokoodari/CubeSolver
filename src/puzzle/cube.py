@@ -49,11 +49,21 @@ class Cube:
         self.twist_by_notation(notation)
         return notation
 
-    def isSolved(self) -> bool:
+    def scramble_G1(self) -> None:
+        notes = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
+        moves = [choice(notes) for _ in range(12)]
+        notation = " ".join(moves)
+        self.twist_by_notation(notation)
+        return notation
+
+    def isSolved(self) -> bool:     # Group G_2 {1}
         for face in self.__faces:
             if not face.isSolved():
                 return False
         return True
+
+    def isDomino(self) -> bool:     # Group G_1 <U, D, L2, R2, F2, B2>
+        return self.__faces[0].isDomino() and self.__faces[5].isDomino()
 
     def reset(self) -> None:
         self.__init__()

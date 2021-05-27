@@ -38,3 +38,9 @@ class CubeFace:
 
     def isSolved(self) -> bool:
         return self.__facelets.count(self.__facelets[0]) == len(self.__facelets)
+
+    def isDomino(self) -> bool:
+        for n in range(1, 5):
+            if n in self.__facelets:
+                return False
+        return True

@@ -1,7 +1,6 @@
 from puzzle.cube import Cube
-# from algorithm.simple import Simple
-# from algorithm.kociemba.kociemba import Kociemba
-# from algorithm.korf.korf import Korf
+from src.algorithm.kociemba.kociemba import Kociemba
+import copy
 
 
 class CubeSolver:
@@ -24,7 +23,8 @@ class CubeSolver:
             elif method == "0":
                 print("Not implemented yet.")
             elif method == "1":
-                print("Not implemented yet.")
+                solve = Kociemba(copy.deepcopy(self.__cube)).solve()
+                print(solve)
             elif method == "2":
                 print("Not implemented yet.")
             else:
@@ -78,6 +78,9 @@ class CubeSolver:
                 break
             elif command == '0':
                 scramble = self.__cube.scramble()
+                print(f"\nScramble: {scramble}\n")
+            elif command == 'g':
+                scramble = self.__cube.scramble_G1()
                 print(f"\nScramble: {scramble}\n")
             elif command == '1':
                 self.__choose_method()
