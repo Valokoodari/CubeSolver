@@ -12,6 +12,7 @@ Rubik's cube.
 ### Weekly reports  
 - [Week 1](docs/week_1.md)  
 - [Week 2](docs/week_2.md)  
+- [Week 3](docs/week_3.md)  
 
 ### Run the program
 ```
