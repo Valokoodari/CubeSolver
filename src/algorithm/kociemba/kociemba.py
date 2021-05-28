@@ -1,10 +1,11 @@
-from typing import Tuple
+from typing import Tuple, List
 from src.puzzle.cube import Cube
 import copy
 
 
 class Kociemba:
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
+    phase1_moves = phase2_moves + ["L", "L'", "R", "R'", "F", "F'", "B", "B'"]
 
     def __init__(self, cube: Cube):
         self.__cube = cube
@@ -15,24 +16,59 @@ class Kociemba:
         elif self.__cube.isDomino():
             return self.__solve_domino()
         else:
-            return (-1, "The cube is not in G1!!!")
+            phase1 = self.__to_domino()
+            if phase1[0] <= 0:
+                return phase1
+            print(phase1)
+            self.__cube.twist_by_notation(phase1[1])
+            return self.__solve_domino()
+
+    def __to_domino(self) -> Tuple[int, str]:
+        for depth in range(1, 20):
+            print(f"Depth: {depth}")
+            result = self.__phase1([], copy.deepcopy(self.__cube), depth)
+            if result[0] > 0:
+                return result
+        return (-1, "")
 
     def __solve_domino(self) -> Tuple[int, str]:
         for depth in range(1, 12):
-            count, notes = self.__search("", copy.deepcopy(self.__cube), depth)
-            if count != -1:
-                return (count, notes)
+            print(f"Depth: {depth}")
+            result = self.__phase2([], copy.deepcopy(self.__cube), depth)
+            if result[0] > 0:
+                return result
         return (-1, "")
 
     @staticmethod
-    def __search(notation: str, cube: Cube, depth: int) -> Tuple[int, str]:
-        if cube.isSolved():
-            return (len(notation.trim().split(" ")), notation)
+    def __phase1(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
+        if cube.isSolved() or cube.isDomino():
+            return (len(notes), " ".join(notes))
         if depth == 0:
             return (-1, "")
-        for m in Kociemba.phase2_moves:
+        for move in Kociemba.phase1_moves:
+            # Skip the move if it turns the same face as the previous one
+            if len(notes) > 0 and move[0] == notes[-1][0]:
+                continue
             new_cube = copy.deepcopy(cube)
-            new_cube.twist_by_notation(m)
-            count,notes = Kociemba.__search(f"{notation} {m}", new_cube, depth-1)
-            if count != -1: return (count, notes)
+            new_cube.twist_by_notation(move)
+            result = Kociemba.__phase1(notes + [move], new_cube, depth-1)
+            if result[0] > 0:
+                return result
+        return (-1, "")
+
+    @staticmethod
+    def __phase2(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
+        if cube.isSolved():
+            return (len(notes), " ".join(notes))
+        if depth == 0:
+            return (-1, "")
+        for move in Kociemba.phase2_moves:
+            # Skip the move if it turns the same face as the previous one
+            if len(notes) > 0 and move[0] == notes[-1][0]:
+                continue
+            new_cube = copy.deepcopy(cube)
+            new_cube.twist_by_notation(move)
+            result = Kociemba.__phase2(notes + [move], new_cube, depth-1)
+            if result[0] > 0:
+                return result
         return (-1, "")

@@ -8,14 +8,14 @@ class CubeSolver:
         self.__cube = Cube()
 
     def __choose_method(self):
-        print("Available solving methods:")
+        print("\nAvailable solving methods:")
         print("0 - Simple method (fast, a lot of moves)")
         print("1 - Kociemba's algorithm (slower, fewer moves")
         print("2 - Korf's algorithm (slowest, fewest moves")
         print("(r or q - return to the main menu)")
 
         while True:
-            method = input("\nCommand: ")
+            method = input("\nMethod: ")
 
             if method in ["r", "q"]:
                 print()
@@ -61,7 +61,7 @@ class CubeSolver:
 
     def __list_commands(self) -> None:
         print("Available commands:")
-        print("0 - scramble")
+        print("0 - scramble (or 'g' for scramble in <U,D,L2,R2,F2,B2>")
         print("1 - solve")
         print("2 - play")
         print("3 - reset")

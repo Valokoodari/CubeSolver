@@ -2,6 +2,8 @@ from typing import List
 
 
 class CubeFace:
+    colors = ('W', 'R', 'B', 'O', 'G', 'Y')
+
     def __init__(self, size: int, color: int):
         self.__size = size
         self.__facelets = [[color]*size for _ in range(size)]
@@ -41,6 +43,15 @@ class CubeFace:
 
     def isDomino(self) -> bool:
         for n in range(1, 5):
-            if n in self.__facelets:
-                return False
+            for row in self.__facelets:
+                if n in row:
+                    return False
         return True
+
+    @property
+    def cube_string(self) -> str:
+        colors = []
+        for row in range(self.__size):
+            for col in range(self.__size):
+                colors.append(self.colors[self.__facelets[row][col]])
+        return "".join(colors)

@@ -85,3 +85,7 @@ class Cube:
             string += f"\n   {''.join([colors[color] for color in row])}"
 
         return string[1:]
+
+    @property
+    def cube_string(self) -> str:
+        return "".join([face.cube_string for face in self.__faces])
