@@ -85,3 +85,30 @@ def test_cube_is_solved_after_reset():
     cube.reset()
 
     assert cube.isSolved()
+
+
+def test_solved_cube_is_domino():
+    cube = Cube()
+
+    assert cube.isDomino()
+
+
+def test_checkerboard_is_domino():
+    cube = Cube()
+    cube.twist_by_notation(checkerboard_notation)
+
+    assert cube.isDomino()
+
+
+def test_cube_in_the_cube_is_not_domino():
+    cube = Cube()
+    cube.twist_by_notation(cube_in_the_cube_notation)
+
+    assert not cube.isDomino()
+
+
+def test_random_cubes_in_G1_are_domino():
+    for _ in range(5):
+        cube = Cube()
+        cube.scramble_G1()
+        assert cube.isDomino()

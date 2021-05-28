@@ -12,30 +12,30 @@ class Kociemba:
 
     def solve(self) -> Tuple[int, str]:
         if self.__cube.isSolved():
-            return ""
+            return (0, "")
         elif self.__cube.isDomino():
             return self.__solve_domino()
         else:
             phase1 = self.__to_domino()
             if phase1[0] <= 0:
                 return phase1
-            print(phase1)
+            print(phase1)   # DEBUG: why simple scrambles take too long
             self.__cube.twist_by_notation(phase1[1])
             return self.__solve_domino()
 
     def __to_domino(self) -> Tuple[int, str]:
         for depth in range(1, 20):
-            print(f"Depth: {depth}")
+            print(f"Depth: {depth}")    # DEBUG: current solving depth
             result = self.__phase1([], copy.deepcopy(self.__cube), depth)
-            if result[0] > 0:
+            if result[0] >= 0:
                 return result
         return (-1, "")
 
     def __solve_domino(self) -> Tuple[int, str]:
         for depth in range(1, 12):
-            print(f"Depth: {depth}")
+            print(f"Depth: {depth}")    # DEBUG: current solving depth
             result = self.__phase2([], copy.deepcopy(self.__cube), depth)
-            if result[0] > 0:
+            if result[0] >= 0:
                 return result
         return (-1, "")
 

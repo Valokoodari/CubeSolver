@@ -30,7 +30,8 @@ class Cube:
 
     def twist_by_notation(self, notation: str) -> None:
         face = ("U", "L", "F", "R", "B", "D")
-
+        if len(notation) < 1:
+            return
         for move in notation.strip().split(" "):
             if len(move) == 1:
                 self.twist(face.index(move))
@@ -41,17 +42,17 @@ class Cube:
                 else:
                     self.twist(face.index(move[0]), False)
 
-    def scramble(self) -> str:
+    def scramble(self, count: int = 20) -> str:
         faces = ["R", "L", "U", "D", "F", "B"]
         options = ["", "'", "2"]
-        moves = [choice(faces) + choice(options) for _ in range(20)]
+        moves = [choice(faces) + choice(options) for _ in range(count)]
         notation = " ".join(moves)
         self.twist_by_notation(notation)
         return notation
 
-    def scramble_G1(self) -> None:
+    def scramble_G1(self, count: int = 12) -> None:
         notes = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
-        moves = [choice(notes) for _ in range(12)]
+        moves = [choice(notes) for _ in range(count)]
         notation = " ".join(moves)
         self.twist_by_notation(notation)
         return notation
