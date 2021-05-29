@@ -2,7 +2,7 @@ from typing import List
 
 
 class CubeFace:
-    colors = ('W', 'R', 'B', 'O', 'G', 'Y')
+    sides = ('U', 'L', 'F', 'R', 'B', 'D')
 
     def __init__(self, size: int, color: int):
         self.__size = size
@@ -50,8 +50,8 @@ class CubeFace:
 
     @property
     def cube_string(self) -> str:
-        colors = []
+        facelets = []
         for row in range(self.__size):
             for col in range(self.__size):
-                colors.append(self.colors[self.__facelets[row][col]])
-        return "".join(colors)
+                facelets.append(self.sides[self.__facelets[row][col]])
+        return "".join(facelets)

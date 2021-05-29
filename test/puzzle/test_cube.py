@@ -112,3 +112,17 @@ def test_random_cubes_in_G1_are_domino():
         cube = Cube()
         cube.scramble_G1()
         assert cube.isDomino()
+
+
+def test_cube_string_of_a_solved_cube_is_correct():
+    solved_string = "UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD"
+    cube_string = Cube().cube_string
+
+    assert solved_string == cube_string
+
+
+def test_empty_notation_doesnt_affect_the_cube():
+    cube = Cube()
+    cube.twist_by_notation("")
+
+    assert cube.isSolved()

@@ -1,2 +1,5 @@
 [run]
 omit = src/cubesolver.py
+
+[report]
+show_missing = true

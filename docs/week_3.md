@@ -6,7 +6,8 @@
 - Implemented a "brute force" version of Kociemba's phase 1. (1 hour)  
 - Slight changes to the data structure of the cube and to the UI. (1 hour)  
 - Research from Kociemba's website and some other sources. (4 hours)  
-- Some more testing (1 hour)
+- Testing for the algorithms (1 hour)
+- Testing for the datastructures (1 hour)
 
 ## Progress on the program  
 - Brute force (ID search without pruning and A*) Kociemba's phase 2.  
@@ -26,5 +27,4 @@
 - Pruning tables for Kociemba's algorithm  
 - Add the A* part of IDA* to Kociemba's  
 - Multithreading?  
-- 100 % test coverage for data structures  
 - Better testing for algorithms  

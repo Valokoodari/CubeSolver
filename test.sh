@@ -15,4 +15,4 @@ flake8 . --exclude=venv --count --exit-zero --max-complexity=10 --max-line-lengt
 
 echo ""
 # Run tests
-pytest -v --cov-report term --cov=src
+pytest -v --cov=src
