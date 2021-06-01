@@ -149,4 +149,3 @@ class Cube:
         for name in self.corner_order:
             if sum([1 for char in corner if char in name]) == 3:
                 return name
-        return ""

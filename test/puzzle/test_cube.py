@@ -126,3 +126,20 @@ def test_empty_notation_doesnt_affect_the_cube():
     cube.twist_by_notation("")
 
     assert cube.isSolved
+
+
+def test_random_scramble_has_all_corners():
+    for _ in range(10):
+        cube = Cube()
+        cube.scramble()
+
+        assert None not in cube.corners
+
+
+def test_random_scramble_has_one_of_each_corner():
+    for _ in range(10):
+        cube = Cube()
+        cube.scramble()
+
+        for corner in Cube.corner_order:
+            assert corner in cube.corners
