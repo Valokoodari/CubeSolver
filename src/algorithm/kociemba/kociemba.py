@@ -6,6 +6,7 @@ import copy
 class Kociemba:
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
     phase1_moves = phase2_moves + ["L", "L'", "R", "R'", "F", "F'", "B", "B'"]
+    pairs = {"U": "D", "D": "U", "L": "R", "R": "L", "F": "B", "B": "F"}
 
     def __init__(self, cube: Cube):
         self.__cube = cube
@@ -46,9 +47,12 @@ class Kociemba:
         if depth == 0:
             return (-1, "")
         for move in Kociemba.phase1_moves:
-            # Skip the move if it turns the same face as the previous one
+            # Skip a move which would just cancel out a previous one
             if len(notes) > 0 and move[0] == notes[-1][0]:
                 continue
+            if len(notes) > 1:
+                if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
+                    continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
             result = Kociemba.__phase1(notes + [move], new_cube, depth-1)
@@ -63,9 +67,12 @@ class Kociemba:
         if depth == 0:
             return (-1, "")
         for move in Kociemba.phase2_moves:
-            # Skip the move if it turns the same face as the previous one
+            # Skip a move which would just cancel out a previous one
             if len(notes) > 0 and move[0] == notes[-1][0]:
                 continue
+            if len(notes) > 1:
+                if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
+                    continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
             result = Kociemba.__phase2(notes + [move], new_cube, depth-1)
