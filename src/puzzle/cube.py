@@ -144,6 +144,10 @@ class Cube:
     def coordinate_ud_slice_phase2(self) -> int:        # 0..23
         pass
 
+    # This is to test if the codecov config change works
+    def fake_function(self) -> None:
+        pass
+
     @classmethod
     def __fix_corner_name(self, corner: str) -> str:
         for name in self.corner_order:
