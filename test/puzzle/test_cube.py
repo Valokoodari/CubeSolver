@@ -44,14 +44,14 @@ def test_an_untwisted_cube_is_solved():
 def test_a_solved_cube_is_solved():
     cube = Cube()
 
-    assert cube.isSolved()
+    assert cube.isSolved
 
 
 def test_a_scrambled_cube_is_not_solved():
     cube = Cube()
     cube.scramble()
 
-    assert not cube.isSolved()
+    assert not cube.isSolved
 
 
 def test_checkerboard_pattern_with_single_twists():
@@ -84,34 +84,34 @@ def test_cube_is_solved_after_reset():
     cube.twist_by_notation("U2 B D'")
     cube.reset()
 
-    assert cube.isSolved()
+    assert cube.isSolved
 
 
 def test_solved_cube_is_domino():
     cube = Cube()
 
-    assert cube.isDomino()
+    assert cube.isDomino
 
 
 def test_checkerboard_is_domino():
     cube = Cube()
     cube.twist_by_notation(checkerboard_notation)
 
-    assert cube.isDomino()
+    assert cube.isDomino
 
 
 def test_cube_in_the_cube_is_not_domino():
     cube = Cube()
     cube.twist_by_notation(cube_in_the_cube_notation)
 
-    assert not cube.isDomino()
+    assert not cube.isDomino
 
 
 def test_random_cubes_in_G1_are_domino():
     for _ in range(5):
         cube = Cube()
         cube.scramble_G1()
-        assert cube.isDomino()
+        assert cube.isDomino
 
 
 def test_cube_string_of_a_solved_cube_is_correct():
@@ -125,4 +125,4 @@ def test_empty_notation_doesnt_affect_the_cube():
     cube = Cube()
     cube.twist_by_notation("")
 
-    assert cube.isSolved()
+    assert cube.isSolved

@@ -12,9 +12,9 @@ class Kociemba:
         self.__cube = cube
 
     def solve(self) -> Tuple[int, str]:
-        if self.__cube.isSolved():
+        if self.__cube.isSolved:
             return (0, "")
-        elif self.__cube.isDomino():
+        elif self.__cube.isDomino:
             return self.__solve_domino()
         else:
             phase1 = self.__to_domino()
@@ -42,7 +42,7 @@ class Kociemba:
 
     @staticmethod
     def __phase1(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
-        if cube.isSolved() or cube.isDomino():
+        if cube.isDomino:
             return (len(notes), " ".join(notes))
         if depth == 0:
             return (-1, "")
@@ -62,7 +62,7 @@ class Kociemba:
 
     @staticmethod
     def __phase2(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
-        if cube.isSolved():
+        if cube.isSolved:
             return (len(notes), " ".join(notes))
         if depth == 0:
             return (-1, "")

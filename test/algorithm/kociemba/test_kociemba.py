@@ -16,7 +16,7 @@ def test_a_cube_in_G1_with_4_moves_is_solved():
     assert solution[0] > 0 and len(solution[1]) > 0
 
     cube.twist_by_notation(solution[1])
-    assert cube.isSolved()
+    assert cube.isSolved
 
 
 def test_cubes_in_G1_with_4_random_moves_are_solved():
@@ -28,7 +28,7 @@ def test_cubes_in_G1_with_4_random_moves_are_solved():
         assert solution[0] >= 0 and len(solution[1]) >= 0
 
         cube.twist_by_notation(solution[1])
-        assert cube.isSolved()
+        assert cube.isSolved
 
 
 def test_cubes_with_one_random_move_are_solved():
@@ -41,4 +41,4 @@ def test_cubes_with_one_random_move_are_solved():
         assert solution[0] >= 0 and len(solution[1]) >= 0
 
         cube.twist_by_notation(solution[1])
-        assert cube.isSolved()
+        assert cube.isSolved

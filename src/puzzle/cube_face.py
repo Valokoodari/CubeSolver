@@ -8,9 +8,23 @@ class CubeFace:
         self.__size = size
         self.__facelets = [[color]*size for _ in range(size)]
 
-    @property
-    def facelets(self) -> List[List[int]]:
-        return self.__facelets[:]
+    def rotate(self, clockwise: bool = True) -> None:
+        if clockwise:
+            self.__facelets = list(zip(*self.__facelets[::-1]))
+        else:
+            self.__facelets = list(zip(*self.__facelets))[::-1]
+
+        self.__facelets = [list(row) for row in self.__facelets]
+
+    def setLine(self, line_number: int, line: List[int]) -> None:
+        if line_number < self.__size:
+            self.__facelets[line_number] = line
+            return
+        for row in range(self.__size):
+            self.__facelets[row][line_number-self.__size] = line[row]
+
+    def getFacelet(self, number: int) -> str:
+        return CubeFace.sides[self.__facelets[number // 3][number % 3]]
 
     def getLine(self, line_number: int) -> List[int]:
         line = [0, 0, 0]
@@ -23,30 +37,9 @@ class CubeFace:
 
         return line
 
-    def setLine(self, line_number: int, line: List[int]) -> None:
-        if line_number < self.__size:
-            self.__facelets[line_number] = line
-            return
-        for row in range(self.__size):
-            self.__facelets[row][line_number-self.__size] = line[row]
-
-    def rotate(self, clockwise: bool = True) -> None:
-        if clockwise:
-            self.__facelets = list(zip(*self.__facelets[::-1]))
-        else:
-            self.__facelets = list(zip(*self.__facelets))[::-1]
-
-        self.__facelets = [list(row) for row in self.__facelets]
-
-    def isSolved(self) -> bool:
-        return self.__facelets.count(self.__facelets[0]) == len(self.__facelets)
-
-    def isDomino(self) -> bool:
-        for n in range(1, 5):
-            for row in self.__facelets:
-                if n in row:
-                    return False
-        return True
+    @property
+    def facelets(self) -> List[List[int]]:
+        return self.__facelets[:]
 
     @property
     def cube_string(self) -> str:
@@ -55,3 +48,15 @@ class CubeFace:
             for col in range(self.__size):
                 facelets.append(self.sides[self.__facelets[row][col]])
         return "".join(facelets)
+
+    @property
+    def isSolved(self) -> bool:
+        return self.__facelets.count(self.__facelets[0]) == len(self.__facelets)
+
+    @property
+    def isDomino(self) -> bool:
+        for n in range(1, 5):
+            for row in self.__facelets:
+                if n in row:
+                    return False
+        return True

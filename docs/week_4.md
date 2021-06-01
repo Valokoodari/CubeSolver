@@ -3,6 +3,7 @@
 ## What did I do this week?  
 - Prevent Kociemba from checking moves like U D U' where U and U' would just
   cancel out each other as there is just D between them. (0.5 hours)  
+- Kociemba's coordinates for pruning (1.5 hours)  
 
 ## Progress on the program  
 - 
