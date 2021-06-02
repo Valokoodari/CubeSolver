@@ -6,7 +6,7 @@ import copy
 class Kociemba:
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
     phase1_moves = phase2_moves + ["L", "L'", "R", "R'", "F", "F'", "B", "B'"]
-    pairs = {"U": "D", "D": "U", "L": "R", "R": "L", "F": "B", "B": "F"}
+    pairs = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
 
     def __init__(self, cube: Cube):
         self.__cube = cube
@@ -24,58 +24,75 @@ class Kociemba:
             self.__cube.twist_by_notation(phase1[1])
             return self.__solve_domino()
 
+    # TODO: __to_domino and __solve_domino are mostly copy-paste
+
     def __to_domino(self) -> Tuple[int, str]:
         for depth in range(1, 20):
-            print(f"Depth: {depth}")    # DEBUG: current solving depth
-            result = self.__phase1([], copy.deepcopy(self.__cube), depth)
+            self.__checked = set()
+            # DEBUG: current solving depth
+            print(f"Depth: {depth}", end="", flush=True)
+            result = self.__search(self.__isDomino, self.phase1_moves, [],
+                                   copy.deepcopy(self.__cube), depth)
+            # DEBUG: cube orientations checked with current depth
+            print(f", checked: {len(self.__checked)} orientations")
             if result[0] >= 0:
                 return result
         return (-1, "")
 
     def __solve_domino(self) -> Tuple[int, str]:
-        for depth in range(1, 12):
-            print(f"Depth: {depth}")    # DEBUG: current solving depth
-            result = self.__phase2([], copy.deepcopy(self.__cube), depth)
+        for depth in range(1, 20):
+            self.__checked = set()
+            # DEBUG: current solving depth
+            print(f"Depth: {depth}", end="", flush=True)
+            result = self.__search(self.__isSolved, self.phase2_moves, [],
+                                   copy.deepcopy(self.__cube), depth)
+            # DEBUG: cube orientations checked with current depth
+            print(f", checked: {len(self.__checked)}")
             if result[0] >= 0:
                 return result
         return (-1, "")
 
-    @staticmethod
-    def __phase1(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
-        if cube.isDomino:
-            return (len(notes), " ".join(notes))
+    def __search(self, check, moves: List[str], notes: List[str], cube: Cube,
+                 depth: int) -> Tuple[int, str]:
         if depth == 0:
+            if check(cube):
+                return (len(notes), " ".join(notes))
             return (-1, "")
-        for move in Kociemba.phase1_moves:
-            # Skip a move which would just cancel out a previous one
-            if len(notes) > 0 and move[0] == notes[-1][0]:
+        for move in moves:
+            if self.__skip_move(notes, move):
                 continue
-            if len(notes) > 1:
-                if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
-                    continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
-            result = Kociemba.__phase1(notes + [move], new_cube, depth-1)
+            if new_cube.cube_string in self.__checked:
+                break
+            self.__checked.add(new_cube.cube_string)
+            result = self.__search(check, moves, notes + [move], new_cube,
+                                   depth - 1)
             if result[0] > 0:
                 return result
         return (-1, "")
 
     @staticmethod
-    def __phase2(notes: List[str], cube: Cube, depth: int) -> Tuple[int, str]:
-        if cube.isSolved:
-            return (len(notes), " ".join(notes))
-        if depth == 0:
-            return (-1, "")
-        for move in Kociemba.phase2_moves:
-            # Skip a move which would just cancel out a previous one
-            if len(notes) > 0 and move[0] == notes[-1][0]:
-                continue
-            if len(notes) > 1:
-                if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
-                    continue
-            new_cube = copy.deepcopy(cube)
-            new_cube.twist_by_notation(move)
-            result = Kociemba.__phase2(notes + [move], new_cube, depth-1)
-            if result[0] > 0:
-                return result
-        return (-1, "")
+    def __skip_move(notes: List[str], move):
+        if len(notes) > 0:
+            # Don't turn the same side twice in a row. E.g. don't allow F F
+            if move[0] == notes[-1][0]:
+                return True
+            # Don't test for example both R L and L R
+            if move[0] in list(Kociemba.pairs)[:3]:
+                if notes[-1][0] == Kociemba.pairs[move[0]]:
+                    return True
+        # Don't turn the same side if the side has not changed at all
+        if len(notes) > 1:
+            if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
+                return True
+
+        return False
+
+    @staticmethod
+    def __isDomino(cube: Cube) -> bool:
+        return cube.isDomino
+
+    @staticmethod
+    def __isSolved(cube: Cube) -> bool:
+        return cube.isSolved
