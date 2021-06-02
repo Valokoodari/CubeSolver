@@ -12,7 +12,8 @@
 |       | 0.5      | Remember cubes which have already been checked.
 |       | 0.5      | Combine Kociemba's __phase1 and __phase2 to only be one function __search with different check function and moveset.
 |       | 0.5      | Style fixes and manual testing.
-| Total | 6.5      |
+|       | 1        | Fixed this on Linux as apparently this did only work on macOS.
+| Total | 7.5      |
 
 ## Progress on the program  
 - 

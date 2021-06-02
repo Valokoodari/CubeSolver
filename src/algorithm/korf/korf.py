@@ -1,4 +1,4 @@
-from ...puzzle.cube import Cube
+from src.puzzle.cube import Cube
 
 
 class Korf:

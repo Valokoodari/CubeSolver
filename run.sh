@@ -7,4 +7,4 @@ else    # Set up the virtual environment if it doesn't exist already
     pip install -r requirements.txt
 fi
 
-python src/cubesolver.py
+python -m src.cubesolver

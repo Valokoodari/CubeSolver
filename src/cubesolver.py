@@ -1,4 +1,4 @@
-from puzzle.cube import Cube
+from src.puzzle.cube import Cube
 from src.algorithm.kociemba.kociemba import Kociemba
 import copy
 
