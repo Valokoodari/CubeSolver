@@ -1,4 +1,5 @@
 from .cube_face import CubeFace
+from math import factorial
 from random import choice
 from typing import List
 
@@ -134,7 +135,16 @@ class Cube:
     # Coordinates for Kociemba's phase 2
     @property
     def coordinate_corner_permutation(self) -> int:     # 0..40319
-        pass
+        coordinate, corners = 0, self.corners
+
+        for i, corner in enumerate(corners[1:]):
+            order, i = 0, i+1
+            for c in corners[:i]:
+                if c in self.corner_order[self.corner_order.index(corner)+1:]:
+                    order += 1
+            coordinate += order * factorial(i)
+
+        return coordinate
 
     @property
     def coordinate_edge_permutation(self) -> int:       # 0..40319

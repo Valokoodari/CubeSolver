@@ -13,7 +13,8 @@
 |       | 0.5      | Combine Kociemba's __phase1 and __phase2 to only be one function __search with different check function and moveset.
 |       | 0.5      | Style fixes and manual testing.
 |       | 1        | Fixed this on Linux as apparently this did only work on macOS.
-| Total | 7.5      |
+| 3.6.  | 1        | Calculation of the corner permutation coordinate.
+| Total | 8.5      |
 
 ## Progress on the program  
 - 
