@@ -49,6 +49,13 @@ def test_a_solved_cube_is_solved():
     assert cube.isSolved
 
 
+def test_R2_L2_is_not_solved():
+    cube = Cube()
+    cube.twist_by_notation("R2 L2")
+
+    assert not cube.isSolved
+
+
 def test_a_scrambled_cube_is_not_solved():
     cube = Cube()
     cube.scramble()

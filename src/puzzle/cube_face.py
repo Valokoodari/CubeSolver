@@ -51,7 +51,8 @@ class CubeFace:
 
     @property
     def isSolved(self) -> bool:
-        return self.__facelets.count(self.__facelets[0]) == len(self.__facelets)
+        cube_string = self.cube_string
+        return cube_string.count(cube_string[0]) == len(cube_string)
 
     @property
     def isDomino(self) -> bool:

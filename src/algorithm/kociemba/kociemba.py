@@ -18,32 +18,35 @@ class Kociemba:
             return self.__solve_domino()
         else:
             phase1 = self.__to_domino()
-            if phase1[0] <= 0:
-                return phase1
-            print(phase1)   # DEBUG: why simple scrambles take too long
+            # print(phase1)   # DEBUG: why simple scrambles take too long
             self.__cube.twist_by_notation(phase1[1])
-            return self.__solve_domino()
+            if self.__cube.isSolved or phase1[0] <= 0:
+                return phase1
+            phase2 = self.__solve_domino()
+            return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 
     # TODO: __to_domino and __solve_domino are mostly copy-paste
 
     def __to_domino(self) -> Tuple[int, str]:
+        print("-- Phase 1 --")
         for depth in range(1, 13):  # At most 12 moves are needed
             self.__checked = set()
             # DEBUG: current solving depth
-            print(f"Depth: {depth}", end="", flush=True)
+            print(f"Depth: {depth:2d}", end="", flush=True)
             result = self.__search(self.__isDomino, self.phase1_moves, [],
                                    copy.deepcopy(self.__cube), depth)
             # DEBUG: cube orientations checked with current depth
-            print(f", checked: {len(self.__checked)} orientations")
+            print(f", checked: {len(self.__checked)}")
             if result[0] >= 0:
                 return result
         return (-1, "")
 
     def __solve_domino(self) -> Tuple[int, str]:
+        print("-- Phase 2 --")
         for depth in range(1, 19):  # At most 18 moves are needed
             self.__checked = set()
             # DEBUG: current solving depth
-            print(f"Depth: {depth}", end="", flush=True)
+            print(f"Depth: {depth:2d}", end="", flush=True)
             result = self.__search(self.__isSolved, self.phase2_moves, [],
                                    copy.deepcopy(self.__cube), depth)
             # DEBUG: cube orientations checked with current depth

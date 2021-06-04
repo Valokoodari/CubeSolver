@@ -14,7 +14,8 @@
 |       | 0.5      | Style fixes and manual testing.
 |       | 1        | Fixed this on Linux as apparently this did only work on macOS.
 | 3.6.  | 1        | Calculation of the corner permutation coordinate.
-| Total | 8.5      |
+| 4.6.  | 1.5      | Manual testing and fixing bugs
+| Total | 10       |
 
 ## Progress on the program  
 - 
