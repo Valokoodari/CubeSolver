@@ -16,6 +16,8 @@ class Cube:
                ((4, 2, 1), (3, 2, 1), (2, 2, 1), (1, 2, 1)))
 
     corner_order = ["URF", "UFL", "ULB", "UBR", "DFR", "DLF", "DBL", "DRB"]
+    edge_order = ["UR", "UF", "UL", "UB", "DR", "DF",
+                  "DL", "DB", "FR", "FL", "BL", "BR"]
 
     def __init__(self):
         self.__faces = [CubeFace(3, i) for i in range(6)]
@@ -88,7 +90,7 @@ class Cube:
 
     @property
     def corners(self) -> List[str]:
-        cords = {   # (face, facelet)
+        coords = {   # (face, facelet)
             "URF": ((0, 8), (3, 0), (2, 2)),
             "UFL": ((0, 6), (2, 0), (1, 2)),
             "ULB": ((0, 0), (1, 0), (4, 2)),
@@ -101,12 +103,38 @@ class Cube:
 
         corners = [""]*8
         for i, corner in enumerate(self.corner_order):
-            for face, facelet in cords[corner]:
+            for face, facelet in coords[corner]:
                 corners[i] += self.__faces[face].getFacelet(facelet)
-            if corners[i] not in cords:
+            if corners[i] not in coords:
                 corners[i] = self.__fix_corner_name(corners[i])
 
         return corners
+
+    @property
+    def edges(self) -> List[str]:
+        coords = {
+            "UR": ((0, 5), (3, 1)),
+            "UF": ((0, 7), (2, 1)),
+            "UL": ((0, 3), (1, 1)),
+            "UB": ((0, 1), (4, 1)),
+            "DR": ((5, 5), (3, 7)),
+            "DF": ((5, 1), (2, 7)),
+            "DL": ((5, 3), (1, 7)),
+            "DB": ((5, 7), (4, 7)),
+            "FR": ((2, 5), (3, 3)),
+            "FL": ((2, 3), (1, 5)),
+            "BL": ((4, 5), (1, 3)),
+            "BR": ((4, 3), (3, 5))
+        }
+
+        edges = [""]*12
+        for i, edge in enumerate(self.edge_order):
+            for face, facelet in coords[edge]:
+                edges[i] += self.__faces[face].getFacelet(facelet)
+            if edges[i] not in self.edge_order:
+                edges[i] = edges[i][::-1]
+
+        return edges
 
     @property
     def isSolved(self) -> bool:     # Group G_2 {1}
@@ -148,14 +176,19 @@ class Cube:
 
     @property
     def coordinate_edge_permutation(self) -> int:       # 0..40319
-        pass
+        coordinate, edges = 0, self.edges[:8]
+
+        for i, edge in enumerate(edges[1:]):
+            order, i = 0, i+1
+            for e in edges[:i]:
+                if e in self.edge_order[self.edge_order.index(edge)+1:]:
+                    order += 1
+            coordinate += order * factorial(i)
+
+        return coordinate
 
     @property
     def coordinate_ud_slice_phase2(self) -> int:        # 0..23
-        pass
-
-    # This is to test if the codecov config change works
-    def fake_function(self) -> None:
         pass
 
     @classmethod

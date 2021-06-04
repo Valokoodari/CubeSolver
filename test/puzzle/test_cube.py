@@ -14,39 +14,19 @@ RRRBBBOOOGGG
 checkerboard_turns = (0, 0, 5, 5, 1, 1, 3, 3, 2, 2, 4, 4)
 checkerboard_notation = "U2 D2 L2 R2 F2 B2"
 checkerboard = "UDUDUDUDULRLRLRLRLFBFBFBFBFRLRLRLRLRBFBFBFBFBDUDUDUDUD"
-# checkerboard_str = """   WYW
-#    YWY
-#    WYW
-# RORBGBOROGBG
-# OROGBGRORBGB
-# RORBGBOROGBG
-#    YWY
-#    WYW
-#    YWY"""
 
 cube_in_the_cube_notation = "F L F U' R U F2 L2 U' L' B D' B' L2 U"
 cube_in_the_cube = "FFFFUUFUUDDDLLDLLDRFFRFFRRRRRURRUUUULLLLBBLBBBBBDDBDDB"
-# cube_in_the_cube_str = """   BBB
-#    BWW
-#    BWW
-# YYYOBBOOWRRR
-# RRYOBBOOWRGG
-# RRYOOOWWWRGG
-#    GGG
-#    YYG
-#    YYG"""
+cube_in_the_cube_edges = ["UR", "UF", "DF", "FL", "UB", "BR",
+                          "DL", "DB", "FR", "DR", "BL", "UL"]
 
 
 def test_the_str_of_a_solved_cube_is_correct():
-    cube = Cube()
-
-    assert str(cube) == solved_str
+    assert str(Cube()) == solved_str
 
 
 def test_a_solved_cube_is_solved():
-    cube = Cube()
-
-    assert cube.isSolved
+    assert Cube().isSolved
 
 
 def test_R2_L2_is_not_solved():
@@ -97,9 +77,7 @@ def test_cube_is_solved_after_reset():
 
 
 def test_solved_cube_is_domino():
-    cube = Cube()
-
-    assert cube.isDomino
+    assert Cube().isDomino
 
 
 def test_checkerboard_is_domino():
@@ -155,9 +133,7 @@ def test_random_scramble_has_one_of_each_corner():
 
 
 def test_coordinate_corner_permutation_is_0_for_a_solved_cube():
-    cube = Cube()
-
-    assert cube.coordinate_corner_permutation == 0
+    assert Cube().coordinate_corner_permutation == 0
 
 
 def test_coordinate_corner_permutation_is_21021_after_R_turn():
@@ -179,3 +155,39 @@ def test_coordinate_corner_permutation_is_correct_for_cube_in_the_cube():
     cube.twist_by_notation(cube_in_the_cube_notation)
 
     assert cube.coordinate_corner_permutation == 25980
+
+
+def test_edges_of_a_solved_cube_are_correct():
+    assert Cube().edges == Cube.edge_order
+
+
+def test_edges_of_cube_in_the_cube_are_correct():
+    cube = Cube()
+    cube.twist_by_notation(cube_in_the_cube_notation)
+
+    assert cube.edges == cube_in_the_cube_edges
+
+
+def test_coordinate_edge_permutation_is_0_for_a_solved_cube():
+    assert Cube().coordinate_edge_permutation == 0
+
+
+def test_coordinate_edge_permutation_is_correct_after_R2_turn():
+    cube = Cube()
+    cube.twist_by_notation("R2")
+
+    assert cube.coordinate_edge_permutation == 105
+
+
+def test_coordinate_edge_permutation_is_correct_after_R2_U2_R2():
+    cube = Cube()
+    cube.twist_by_notation("R2 U2 R2")
+
+    assert cube.coordinate_edge_permutation == 60
+
+
+def test_coordinate_edge_permutation_is_correct_for_checkerboard():
+    cube = Cube()
+    cube.twist_by_notation(checkerboard_notation)
+
+    assert cube.coordinate_edge_permutation == 35152

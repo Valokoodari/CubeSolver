@@ -15,7 +15,8 @@
 |       | 1        | Fixed this on Linux as apparently this did only work on macOS.
 | 3.6.  | 1        | Calculation of the corner permutation coordinate.
 | 4.6.  | 2.5      | Manual testing and fixing bugs
-| Total | 11       |
+|       | 2        | Calculation of the edge permutation coordinate.
+| Total | 13       |
 
 ## Progress on the program  
 - 
