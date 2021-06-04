@@ -1,5 +1,5 @@
 from .cube_face import CubeFace
-from math import factorial
+from math import factorial, comb
 from random import choice
 from typing import List
 
@@ -158,7 +158,17 @@ class Cube:
 
     @property
     def coordinate_ud_slice(self) -> int:               # 0..494
-        pass
+        edges, k, coordinate = self.edges, 3, 0
+
+        for n in reversed(range(12)):
+            if edges[n] in self.edge_order[8:]:
+                k -= 1
+            else:
+                coordinate += comb(n, k)
+            if k < 0:
+                break
+
+        return coordinate
 
     # Coordinates for Kociemba's phase 2
     @property

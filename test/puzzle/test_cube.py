@@ -127,9 +127,58 @@ def test_random_scramble_has_one_of_each_corner():
     for _ in range(10):
         cube = Cube()
         cube.scramble()
+        corners = cube.corners
 
         for corner in Cube.corner_order:
-            assert corner in cube.corners
+            assert corner in corners
+
+
+def test_edges_of_a_solved_cube_are_correct():
+    assert Cube().edges == Cube.edge_order
+
+
+def test_edges_of_cube_in_the_cube_are_correct():
+    cube = Cube()
+    cube.twist_by_notation(cube_in_the_cube_notation)
+
+    assert cube.edges == cube_in_the_cube_edges
+
+
+def test_random_scramble_has_one_of_each_edge():
+    for _ in range(10):
+        cube = Cube()
+        cube.scramble()
+        edges = cube.edges
+
+        for edge in Cube.edge_order:
+            assert edge in edges
+
+
+def test_coordinate_ud_slice_of_a_solved_cube_is_0():
+    assert Cube().coordinate_ud_slice == 0
+
+
+def test_coordinate_ud_slice_of_cube_in_G1_is_always_0():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert cube.coordinate_ud_slice == 0
+
+
+def test_coordinate_ud_slice_is_currect_after_R_L_D_F2_B2():
+    cube = Cube()
+    cube.twist_by_notation("R L D F2 B2")
+
+    assert cube.coordinate_ud_slice == 494
+
+
+def test_coordinate_ud_slice_is_always_between_0_and_494():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.coordinate_ud_slice <= 494
 
 
 def test_coordinate_corner_permutation_is_0_for_a_solved_cube():
@@ -163,17 +212,6 @@ def test_coordinate_corner_permutation_is_always_between_0_and_40319():
         cube.scramble_G1()
 
         assert 0 <= cube.coordinate_corner_permutation <= 40319
-
-
-def test_edges_of_a_solved_cube_are_correct():
-    assert Cube().edges == Cube.edge_order
-
-
-def test_edges_of_cube_in_the_cube_are_correct():
-    cube = Cube()
-    cube.twist_by_notation(cube_in_the_cube_notation)
-
-    assert cube.edges == cube_in_the_cube_edges
 
 
 def test_coordinate_edge_permutation_is_0_for_a_solved_cube():
