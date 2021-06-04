@@ -1,6 +1,8 @@
 from src.puzzle.cube import Cube
 
 
+TEST_SIZE = 20
+
 solved_str = """   WWW
    WWW
    WWW
@@ -154,12 +156,39 @@ def test_random_scramble_has_one_of_each_edge():
             assert edge in edges
 
 
+def test_coordinate_corner_orientation_is_0_for_a_solved_cube():
+    assert Cube().coordinate_corner_orientation == 0
+
+
+def test_coordinate_corner_orientation_of_cube_in_G1_is_always_0():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert cube.coordinate_corner_orientation == 0
+
+
+def test_coordinate_corner_orientation_is_always_between_0_and_2186():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.coordinate_corner_orientation <= 2186
+
+
+def test_coordinate_corner_orientation_is_correct_after_R():
+    cube = Cube()
+    cube.twist_by_notation("R")
+
+    assert cube.coordinate_corner_orientation == 1494
+
+
 def test_coordinate_edge_orientation_is_0_for_a_solved_cube():
     assert Cube().coordinate_edge_orientation == 0
 
 
 def test_coordinate_edge_orientation_of_cube_in_G1_is_always_0():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble_G1()
 
@@ -174,7 +203,7 @@ def test_coordinate_edge_orientation_is_not_0_after_rB_rR():
 
 
 def test_coordinate_edge_orientation_is_always_between_0_and_2047():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble()
 
@@ -186,7 +215,7 @@ def test_coordinate_ud_slice_of_a_solved_cube_is_0():
 
 
 def test_coordinate_ud_slice_of_cube_in_G1_is_always_0():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble_G1()
 
@@ -201,7 +230,7 @@ def test_coordinate_ud_slice_is_correct_after_R_L_D_F2_B2():
 
 
 def test_coordinate_ud_slice_is_always_between_0_and_494():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble()
 
@@ -234,7 +263,7 @@ def test_coordinate_corner_permutation_is_correct_for_cube_in_the_cube():
 
 
 def test_coordinate_corner_permutation_is_always_between_0_and_40319():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble_G1()
 
@@ -267,7 +296,7 @@ def test_coordinate_edge_permutation_is_correct_for_checkerboard():
 
 
 def test_coordinate_edge_permutation_is_always_between_0_and_40319():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble_G1()
 
@@ -293,8 +322,58 @@ def test_coordinate_ud_slice_phase2_of_checkerboard_is_correct():
 
 
 def test_coordinate_ud_slice_phase2_is_always_between_0_and_23():
-    for _ in range(20):
+    for _ in range(TEST_SIZE):
         cube = Cube()
         cube.scramble_G1()
 
         assert 0 <= cube.coordinate_ud_slice_phase2 <= 23
+
+
+def test_all_coordinates_of_a_solved_cube_are_0():
+    cube = Cube()
+
+    assert cube.coordinate_corner_orientation == 0
+    assert cube.coordinate_edge_orientation == 0
+    assert cube.coordinate_ud_slice == 0
+    assert cube.coordinate_corner_permutation == 0
+    assert cube.coordinate_edge_permutation == 0
+    assert cube.coordinate_ud_slice_phase2 == 0
+
+
+def test_all_phase1_coordinates_of_cube_in_G1_are_always_0():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert cube.coordinate_corner_orientation == 0
+        assert cube.coordinate_edge_orientation == 0
+        assert cube.coordinate_ud_slice == 0
+
+
+def test_all_phase1_coordinates_of_cube_not_in_G1_are_never_0():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        while cube.isDomino:
+            cube.scramble()
+
+        x1 = cube.coordinate_corner_orientation
+        x2 = cube.coordinate_edge_orientation
+        x3 = cube.coordinate_ud_slice
+
+        assert (x1, x2, x3) != (0, 0, 0)
+
+
+def test_all_coordinates_of_a_not_solved_cube_are_never_0():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        while cube.isSolved:
+            cube.scramble()
+
+        x1 = cube.coordinate_corner_orientation
+        x2 = cube.coordinate_edge_orientation
+        x3 = cube.coordinate_ud_slice
+        x4 = cube.coordinate_corner_permutation
+        x5 = cube.coordinate_edge_permutation
+        x6 = cube.coordinate_ud_slice_phase2
+
+        assert (x1, x2, x3, x4, x5, x6) != (0, 0, 0, 0, 0, 0)

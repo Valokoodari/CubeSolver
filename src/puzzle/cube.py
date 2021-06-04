@@ -137,10 +137,6 @@ class Cube:
         return edges
 
     @property
-    def __corner_orientations(self):
-        pass
-
-    @property
     def isSolved(self) -> bool:     # Group G_2 {1}
         for face in self.__faces:
             if not face.isSolved:
@@ -154,7 +150,18 @@ class Cube:
     # Coordinates for Kociemba's phase 1
     @property
     def coordinate_corner_orientation(self) -> int:     # 0..2186
-        pass
+        coordinate, corners = 0, [""]*8
+        for i, corner in enumerate(self.corner_order[:-1]):
+            for face, facelet in self.corner_coords[corner]:
+                corners[i] += self.__faces[face].getFacelet(facelet)
+            if corners[i] not in self.corner_coords:
+                correct = self.__fix_corner_name(corners[i])
+                if corners[i][0] == correct[2]:
+                    coordinate += 3**(6-i)
+                elif corners[i][0] == correct[1]:
+                    coordinate += 2*3**(6-i)
+
+        return coordinate
 
     @property
     def coordinate_edge_orientation(self) -> int:       # 0..2047
