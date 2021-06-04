@@ -1,7 +1,7 @@
 from src.puzzle.cube import Cube
 from src.algorithm.kociemba.kociemba import Kociemba
 import copy
-
+import time
 
 class CubeSolver:
     def __init__(self):
@@ -23,8 +23,13 @@ class CubeSolver:
             elif method == "0":
                 print("Not implemented yet.")
             elif method == "1":
-                solve = Kociemba(copy.deepcopy(self.__cube)).solve()
-                print(solve)
+                startTime = time.time()
+                solution = Kociemba(copy.deepcopy(self.__cube)).solve()
+                totalTime = time.time()-startTime
+                if solution[0] < 0:
+                    print(f"Couldn't find a solution in {totalTime:.3f} seconds.")
+                else:
+                    print(f"Found solution: {solution[1]} in {totalTime:.3f} seconds.")
             elif method == "2":
                 print("Not implemented yet.")
             else:

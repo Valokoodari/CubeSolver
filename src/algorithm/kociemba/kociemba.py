@@ -30,13 +30,13 @@ class Kociemba:
     def __to_domino(self) -> Tuple[int, str]:
         print("-- Phase 1 --")
         for depth in range(1, 13):  # At most 12 moves are needed
-            self.__checked = set()
+            self.__checked = 0
             # DEBUG: current solving depth
             print(f"Depth: {depth:2d}", end="", flush=True)
             result = self.__search(self.__isDomino, self.phase1_moves, [],
                                    copy.deepcopy(self.__cube), depth)
             # DEBUG: cube orientations checked with current depth
-            print(f", checked: {len(self.__checked)}")
+            print(f", checked: {self.__checked}")
             if result[0] >= 0:
                 return result
         return (-1, "")
@@ -44,13 +44,13 @@ class Kociemba:
     def __solve_domino(self) -> Tuple[int, str]:
         print("-- Phase 2 --")
         for depth in range(1, 19):  # At most 18 moves are needed
-            self.__checked = set()
+            self.__checked = 0
             # DEBUG: current solving depth
             print(f"Depth: {depth:2d}", end="", flush=True)
             result = self.__search(self.__isSolved, self.phase2_moves, [],
                                    copy.deepcopy(self.__cube), depth)
             # DEBUG: cube orientations checked with current depth
-            print(f", checked: {len(self.__checked)}")
+            print(f", checked: {self.__checked}")
             if result[0] >= 0:
                 return result
         return (-1, "")
@@ -66,9 +66,7 @@ class Kociemba:
                 continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
-            if new_cube.cube_string in self.__checked:
-                break
-            self.__checked.add(new_cube.cube_string)
+            self.__checked += 1
             result = self.__search(check, moves, notes + [move], new_cube,
                                    depth - 1)
             if result[0] > 0:

@@ -14,8 +14,8 @@
 |       | 0.5      | Style fixes and manual testing.
 |       | 1        | Fixed this on Linux as apparently this did only work on macOS.
 | 3.6.  | 1        | Calculation of the corner permutation coordinate.
-| 4.6.  | 1.5      | Manual testing and fixing bugs
-| Total | 10       |
+| 4.6.  | 2.5      | Manual testing and fixing bugs
+| Total | 11       |
 
 ## Progress on the program  
 - 
@@ -25,6 +25,25 @@
 
 ## Challenges?  
 - Python is quite slow :) I should have gone with C++ or Rust instead.  
+- There is a weird bug and all orientations are not checked:
+```
+-- Phase 2 --
+Depth:  1, checked: 10
+Depth:  2, checked: 77
+Depth:  3, checked: 533
+Depth:  4, checked: 3592
+Depth:  5, checked: 20231
+Depth:  6, checked: 57528
+Depth:  7, checked: 131706
+Depth:  8, checked: 379979
+Depth:  9, checked: 473862
+Depth: 10, checked: 1022341
+Depth: 11, checked: 379979
+Depth: 12, checked: 921401
+Depth: 13, checked: 2209856
+Depth: 14, checked: 379964
+Depth: 15, checked: 921737
+```
 
 ## Next week
 - 

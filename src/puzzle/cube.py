@@ -54,7 +54,7 @@ class Cube:
         self.twist_by_notation(notation)
         return notation
 
-    def scramble_G1(self, count: int = 12) -> None:
+    def scramble_G1(self, count: int = 18) -> None:
         notes = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
         moves = [choice(notes) for _ in range(count)]
         notation = " ".join(moves)
