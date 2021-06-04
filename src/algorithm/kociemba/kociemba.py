@@ -27,7 +27,7 @@ class Kociemba:
     # TODO: __to_domino and __solve_domino are mostly copy-paste
 
     def __to_domino(self) -> Tuple[int, str]:
-        for depth in range(1, 20):
+        for depth in range(1, 13):  # At most 12 moves are needed
             self.__checked = set()
             # DEBUG: current solving depth
             print(f"Depth: {depth}", end="", flush=True)
@@ -40,7 +40,7 @@ class Kociemba:
         return (-1, "")
 
     def __solve_domino(self) -> Tuple[int, str]:
-        for depth in range(1, 20):
+        for depth in range(1, 19):  # At most 18 moves are needed
             self.__checked = set()
             # DEBUG: current solving depth
             print(f"Depth: {depth}", end="", flush=True)
