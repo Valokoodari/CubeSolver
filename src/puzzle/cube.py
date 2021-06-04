@@ -19,6 +19,32 @@ class Cube:
     edge_order = ["UR", "UF", "UL", "UB", "DR", "DF",
                   "DL", "DB", "FR", "FL", "BL", "BR"]
 
+    corner_coords = {   # (face, facelet)
+        "URF": ((0, 8), (3, 0), (2, 2)),
+        "UFL": ((0, 6), (2, 0), (1, 2)),
+        "ULB": ((0, 0), (1, 0), (4, 2)),
+        "UBR": ((0, 2), (4, 0), (3, 2)),
+        "DFR": ((5, 2), (2, 8), (3, 6)),
+        "DLF": ((5, 0), (1, 8), (2, 6)),
+        "DBL": ((5, 6), (4, 8), (1, 6)),
+        "DRB": ((5, 8), (3, 8), (4, 6))
+    }
+
+    edge_coords = {
+        "UR": ((0, 5), (3, 1)),
+        "UF": ((0, 7), (2, 1)),
+        "UL": ((0, 3), (1, 1)),
+        "UB": ((0, 1), (4, 1)),
+        "DR": ((5, 5), (3, 7)),
+        "DF": ((5, 1), (2, 7)),
+        "DL": ((5, 3), (1, 7)),
+        "DB": ((5, 7), (4, 7)),
+        "FR": ((2, 5), (3, 3)),
+        "FL": ((2, 3), (1, 5)),
+        "BL": ((4, 5), (1, 3)),
+        "BR": ((4, 3), (3, 5))
+    }
+
     def __init__(self):
         self.__faces = [CubeFace(3, i) for i in range(6)]
 
@@ -90,51 +116,29 @@ class Cube:
 
     @property
     def corners(self) -> List[str]:
-        coords = {   # (face, facelet)
-            "URF": ((0, 8), (3, 0), (2, 2)),
-            "UFL": ((0, 6), (2, 0), (1, 2)),
-            "ULB": ((0, 0), (1, 0), (4, 2)),
-            "UBR": ((0, 2), (4, 0), (3, 2)),
-            "DFR": ((5, 2), (2, 8), (3, 6)),
-            "DLF": ((5, 0), (1, 8), (2, 6)),
-            "DBL": ((5, 6), (4, 8), (1, 6)),
-            "DRB": ((5, 8), (3, 8), (4, 6))
-        }
-
         corners = [""]*8
         for i, corner in enumerate(self.corner_order):
-            for face, facelet in coords[corner]:
+            for face, facelet in self.corner_coords[corner]:
                 corners[i] += self.__faces[face].getFacelet(facelet)
-            if corners[i] not in coords:
+            if corners[i] not in self.corner_coords:
                 corners[i] = self.__fix_corner_name(corners[i])
 
         return corners
 
     @property
     def edges(self) -> List[str]:
-        coords = {
-            "UR": ((0, 5), (3, 1)),
-            "UF": ((0, 7), (2, 1)),
-            "UL": ((0, 3), (1, 1)),
-            "UB": ((0, 1), (4, 1)),
-            "DR": ((5, 5), (3, 7)),
-            "DF": ((5, 1), (2, 7)),
-            "DL": ((5, 3), (1, 7)),
-            "DB": ((5, 7), (4, 7)),
-            "FR": ((2, 5), (3, 3)),
-            "FL": ((2, 3), (1, 5)),
-            "BL": ((4, 5), (1, 3)),
-            "BR": ((4, 3), (3, 5))
-        }
-
         edges = [""]*12
         for i, edge in enumerate(self.edge_order):
-            for face, facelet in coords[edge]:
+            for face, facelet in self.edge_coords[edge]:
                 edges[i] += self.__faces[face].getFacelet(facelet)
             if edges[i] not in self.edge_order:
                 edges[i] = edges[i][::-1]
 
         return edges
+
+    @property
+    def __corner_orientations(self):
+        pass
 
     @property
     def isSolved(self) -> bool:     # Group G_2 {1}
@@ -154,7 +158,14 @@ class Cube:
 
     @property
     def coordinate_edge_orientation(self) -> int:       # 0..2047
-        pass
+        edges, coordinate = [""]*12, 0
+        for i, edge in enumerate(self.edge_order):
+            for face, facelet in self.edge_coords[edge]:
+                edges[i] += self.__faces[face].getFacelet(facelet)
+            if edges[i] not in self.edge_order:
+                coordinate += i
+
+        return coordinate
 
     @property
     def coordinate_ud_slice(self) -> int:               # 0..494

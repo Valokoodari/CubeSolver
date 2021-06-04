@@ -154,6 +154,33 @@ def test_random_scramble_has_one_of_each_edge():
             assert edge in edges
 
 
+def test_coordinate_edge_orientation_is_0_for_a_solved_cube():
+    assert Cube().coordinate_edge_orientation == 0
+
+
+def test_coordinate_edge_orientation_of_cube_in_G1_is_always_0():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert cube.coordinate_edge_orientation == 0
+
+
+def test_coordinate_edge_orientation_is_not_0_after_rB_rR():
+    cube = Cube()
+    cube.twist_by_notation("B' R'")
+
+    assert cube.coordinate_edge_orientation != 0
+
+
+def test_coordinate_edge_orientation_is_always_between_0_and_2047():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.coordinate_edge_orientation <= 2047
+
+
 def test_coordinate_ud_slice_of_a_solved_cube_is_0():
     assert Cube().coordinate_ud_slice == 0
 
@@ -166,7 +193,7 @@ def test_coordinate_ud_slice_of_cube_in_G1_is_always_0():
         assert cube.coordinate_ud_slice == 0
 
 
-def test_coordinate_ud_slice_is_currect_after_R_L_D_F2_B2():
+def test_coordinate_ud_slice_is_correct_after_R_L_D_F2_B2():
     cube = Cube()
     cube.twist_by_notation("R L D F2 B2")
 
