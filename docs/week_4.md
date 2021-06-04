@@ -18,13 +18,16 @@
 |       | 2        | Calculation of the edge permutation coordinate.
 |       | 0.5      | Building of an executable on macOS and Linux
 |       | 0.5      | Documentation: testing, implementation, guide.
-| Total | 14       |
+|       | 0.5      | Calculation of the UD slice phase 2 coordinate.
+| Total | 14.5     |
 
 ## Progress on the program  
 
 ## What did I learn?  
-- This course with this idea was a really bad idea when I also have the software
-  engineering lab at the same time. (I'm still not giving up though)  
+- This course with this problem was a really bad idea when I also have the
+  software engineering lab at the same time. (I'm still not giving up though)  
+- Implementing multithreading with Python is suprisingly hard and I probably
+  don't have enough time to think about it.  
 
 ## Challenges?  
 - Python is quite slow :) I should have gone with C++ or Rust instead.  
@@ -50,5 +53,5 @@ Depth: 15, checked: 921737
 
 ## Next week
 - Finish Kociemba's algorithm  
-- Implement Korf's algorithm  
+- Implement Korf's algorithm (hopefully)  
 - Hopefully generate the tables  

@@ -157,6 +157,14 @@ def test_coordinate_corner_permutation_is_correct_for_cube_in_the_cube():
     assert cube.coordinate_corner_permutation == 25980
 
 
+def test_coordinate_corner_permutation_is_always_between_0_and_40319():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert 0 <= cube.coordinate_corner_permutation <= 40319
+
+
 def test_edges_of_a_solved_cube_are_correct():
     assert Cube().edges == Cube.edge_order
 
@@ -191,3 +199,37 @@ def test_coordinate_edge_permutation_is_correct_for_checkerboard():
     cube.twist_by_notation(checkerboard_notation)
 
     assert cube.coordinate_edge_permutation == 35152
+
+
+def test_coordinate_edge_permutation_is_always_between_0_and_40319():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert 0 <= cube.coordinate_edge_permutation <= 40319
+
+
+def test_coordinate_ud_slice_phase2_is_0_for_a_solved_cube():
+    assert Cube().coordinate_ud_slice_phase2 == 0
+
+
+def test_coordinate_ud_slice_phase2_is_correct_after_R2_L2():
+    cube = Cube()
+    cube.twist_by_notation("R2 L2")
+
+    assert cube.coordinate_ud_slice_phase2 == 23
+
+
+def test_coordinate_ud_slice_phase2_of_checkerboard_is_correct():
+    cube = Cube()
+    cube.twist_by_notation(checkerboard_notation)
+
+    assert cube.coordinate_ud_slice_phase2 == 16
+
+
+def test_coordinate_ud_slice_phase2_is_always_between_0_and_23():
+    for _ in range(20):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert 0 <= cube.coordinate_ud_slice_phase2 <= 23

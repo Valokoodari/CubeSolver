@@ -189,7 +189,16 @@ class Cube:
 
     @property
     def coordinate_ud_slice_phase2(self) -> int:        # 0..23
-        pass
+        coordinate, edges = 0, self.edges[8:]
+
+        for i, edge in enumerate(edges[1:]):
+            order, i = 0, i+1
+            for e in edges[:i]:
+                if e in self.edge_order[self.edge_order.index(edge)+1:]:
+                    order += 1
+            coordinate += order * factorial(i)
+
+        return coordinate
 
     @classmethod
     def __fix_corner_name(self, corner: str) -> str:
