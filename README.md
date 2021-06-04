@@ -23,3 +23,8 @@ Rubik's cube.
 ```
 ./test.sh
 ```  
+
+### Build the program for the current OS
+```
+./build.sh
+```

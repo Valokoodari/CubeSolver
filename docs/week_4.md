@@ -16,17 +16,19 @@
 | 3.6.  | 1        | Calculation of the corner permutation coordinate.
 | 4.6.  | 2.5      | Manual testing and fixing bugs
 |       | 2        | Calculation of the edge permutation coordinate.
-| Total | 13       |
+|       | 0.5      | Building of an executable on macOS and Linux
+|       | 0.5      | Documentation: testing, implementation, guide.
+| Total | 14       |
 
 ## Progress on the program  
-- 
 
 ## What did I learn?  
-- 
+- This course with this idea was a really bad idea when I also have the software
+  engineering lab at the same time. (I'm still not giving up though)  
 
 ## Challenges?  
 - Python is quite slow :) I should have gone with C++ or Rust instead.  
-- There is a weird bug and all orientations are not checked:
+- There is a weird bug and some orientations are not checked:
 ```
 -- Phase 2 --
 Depth:  1, checked: 10
@@ -47,4 +49,6 @@ Depth: 15, checked: 921737
 ```
 
 ## Next week
-- 
+- Finish Kociemba's algorithm  
+- Implement Korf's algorithm  
+- Hopefully generate the tables  
