@@ -1,7 +1,7 @@
 from .cube_face import CubeFace
 from math import factorial, comb
 from random import choice
-from typing import List
+from typing import List, Tuple
 
 
 class Cube:
@@ -149,6 +149,14 @@ class Cube:
 
     # Coordinates for Kociemba's phase 1
     @property
+    def triple(self) -> Tuple[int, int, int]:
+        x1 = self.coordinate_corner_orientation
+        x2 = self.coordinate_edge_orientation
+        x3 = self.coordinate_ud_slice
+
+        return (x1, x2, x3)
+
+    @property
     def coordinate_corner_orientation(self) -> int:     # 0..2186
         coordinate, corners = 0, [""]*8
         for i, corner in enumerate(self.corner_order[:-1]):
@@ -190,6 +198,14 @@ class Cube:
 
     # Coordinates for Kociemba's phase 2
     @property
+    def triple2(self) -> Tuple[int, int, int]:
+        x4 = self.coordinate_corner_permutation
+        x5 = self.coordinate_edge_permutation
+        x6 = self.coordinate_ud_slice_phase2
+
+        return (x4, x5, x6)
+
+    @property
     def coordinate_corner_permutation(self) -> int:     # 0..40319
         coordinate, corners = 0, self.corners
 
@@ -227,6 +243,29 @@ class Cube:
             coordinate += order * factorial(i)
 
         return coordinate
+
+    # Indexed states for Korf's algorithm
+    @property
+    def corner_pattern(self) -> int:      # 0..88,179,839
+        # 2187 orientations, 40320 permutations -> 88,179,840 states
+        coordinate = self.coordinate_corner_orientation * 40_320
+        return coordinate + self.coordinate_corner_permutation
+
+    @property
+    def edge_pattern1(self) -> int:       # 0..42,577,919
+        # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
+        edges = self.edge_order[:6]
+        _ = edges  # Removes the unused warning
+        # TODO: Implement the index calculation
+        pass
+
+    @property
+    def edge_pattern2(self) -> int:       # 0..42,577,919
+        # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
+        edges = self.edge_order[6:]
+        _ = edges  # Removes the unused warning
+        # TODO: Implement the index calculation
+        pass
 
     @classmethod
     def __fix_corner_name(self, corner: str) -> str:

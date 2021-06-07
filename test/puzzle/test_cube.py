@@ -1,6 +1,7 @@
 from src.puzzle.cube import Cube
 
 
+# This determines how many random scrambles are tested in randomized tests
 TEST_SIZE = 20
 
 solved_str = """   WWW
@@ -156,6 +157,29 @@ def test_random_scramble_has_one_of_each_edge():
             assert edge in edges
 
 
+# Properties of the cube for Kociemba's algorithm
+
+def test_triple_is_0_for_a_solved_cube():
+    assert Cube().triple == (0, 0, 0)
+
+
+def test_triple_is_always_0_for_a_cube_in_G1():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble_G1()
+
+        assert cube.triple == (0, 0, 0)
+
+
+def test_triple_is_never_0_for_a_cube_not_in_G1():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        while cube.isDomino:
+            cube.scramble()
+
+        assert cube.triple != (0, 0, 0)
+
+
 def test_coordinate_corner_orientation_is_0_for_a_solved_cube():
     assert Cube().coordinate_corner_orientation == 0
 
@@ -235,6 +259,19 @@ def test_coordinate_ud_slice_is_always_between_0_and_494():
         cube.scramble()
 
         assert 0 <= cube.coordinate_ud_slice <= 494
+
+
+def test_triple2_is_0_for_a_solved_cube():
+    assert Cube().triple2 == (0, 0, 0)
+
+
+def test_triple_is_never_0_for_an_unsolved_cube():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        while cube.isSolved:
+            cube.scramble()
+
+        assert cube.triple != (0, 0, 0)
 
 
 def test_coordinate_corner_permutation_is_0_for_a_solved_cube():
@@ -377,3 +414,17 @@ def test_all_coordinates_of_a_not_solved_cube_are_never_0():
         x6 = cube.coordinate_ud_slice_phase2
 
         assert (x1, x2, x3, x4, x5, x6) != (0, 0, 0, 0, 0, 0)
+
+
+# Properties of the cube for Korf's algorithm
+
+def test_corner_pattern_is_0_for_a_solved_cube():
+    assert Cube().corner_pattern == 0
+
+
+def test_corner_patter_is_always_in_the_correct_range():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.corner_pattern <= 88_179_839

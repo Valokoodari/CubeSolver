@@ -15,60 +15,47 @@ class Kociemba:
         if self.__cube.isSolved:
             return (0, "")
         elif self.__cube.isDomino:
-            return self.__solve_domino()
+            return self.__solve_phase(2)
         else:
-            phase1 = self.__to_domino()
-            # print(phase1)   # DEBUG: why simple scrambles take too long
+            phase1 = self.__solve_phase(1)
             self.__cube.twist_by_notation(phase1[1])
             if self.__cube.isSolved or phase1[0] <= 0:
                 return phase1
-            phase2 = self.__solve_domino()
+            # DEBUG: how the domino state was reached
+            print(f"Current steps: {phase1[1]}")
+            phase2 = self.__solve_phase(2)
             return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 
-    # TODO: __to_domino and __solve_domino are mostly copy-paste
-
-    def __to_domino(self) -> Tuple[int, str]:
-        print("-- Phase 1 --")
-        for depth in range(1, 13):  # At most 12 moves are needed
-            self.__checked = 0
-            # DEBUG: current solving depth
+    def __solve_phase(self, phase) -> Tuple[int, str]:
+        print(f"-- Phase {phase} --")
+        for depth in range(1, 13 if phase == 1 else 19):
+            # TODO: Takes way too much memory and is slowish but still
+            # better than nothing when there are no pruning tables.
+            self.__checked = []
+            # DEBUG: current solcing depth
             print(f"Depth: {depth:2d}", end="", flush=True)
-            result = self.__search(self.__isDomino, self.phase1_moves, [],
-                                   copy.deepcopy(self.__cube), depth)
+            result = self.__search(phase, [], copy.deepcopy(self.__cube), depth)
             # DEBUG: cube orientations checked with current depth
-            print(f", checked: {self.__checked}")
+            print(f", checked: {len(self.__checked)}")
             if result[0] >= 0:
                 return result
         return (-1, "")
 
-    def __solve_domino(self) -> Tuple[int, str]:
-        print("-- Phase 2 --")
-        for depth in range(1, 19):  # At most 18 moves are needed
-            self.__checked = 0
-            # DEBUG: current solving depth
-            print(f"Depth: {depth:2d}", end="", flush=True)
-            result = self.__search(self.__isSolved, self.phase2_moves, [],
-                                   copy.deepcopy(self.__cube), depth)
-            # DEBUG: cube orientations checked with current depth
-            print(f", checked: {self.__checked}")
-            if result[0] >= 0:
-                return result
-        return (-1, "")
-
-    def __search(self, check, moves: List[str], notes: List[str], cube: Cube,
+    def __search(self, phase, notes: List[str], cube: Cube,
                  depth: int) -> Tuple[int, str]:
         if depth == 0:
-            if check(cube):
+            if phase == 1 and cube.isDomino or cube.isSolved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
-        for move in moves:
+        for move in self.phase1_moves if phase == 1 else self.phase2_moves:
             if self.__skip_move(notes, move):
                 continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
-            self.__checked += 1
-            result = self.__search(check, moves, notes + [move], new_cube,
-                                   depth - 1)
+            if new_cube.cube_string in self.__checked:
+                break
+            self.__checked.append(new_cube.cube_string)
+            result = self.__search(phase, notes + [move], new_cube, depth - 1)
             if result[0] > 0:
                 return result
         return (-1, "")
@@ -89,11 +76,3 @@ class Kociemba:
                 return True
 
         return False
-
-    @staticmethod
-    def __isDomino(cube: Cube) -> bool:
-        return cube.isDomino
-
-    @staticmethod
-    def __isSolved(cube: Cube) -> bool:
-        return cube.isSolved
