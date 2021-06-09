@@ -428,3 +428,41 @@ def test_corner_patter_is_always_in_the_correct_range():
         cube.scramble()
 
         assert 0 <= cube.corner_pattern <= 88_179_839
+
+
+def test_edge_pattern_first_is_0_for_a_solved_cube():
+    assert Cube().edge_pattern_first == 0
+
+
+def test_edge_pattern_first_is_correct_for_checkerboard():
+    cube = Cube()
+    cube.twist_by_notation(checkerboard_notation)
+
+    assert cube.edge_pattern_first == 365136
+
+
+def test_edge_pattern_first_is_always_in_the_correct_range():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.edge_pattern_first <= 42_577_919
+
+
+def test_edge_pattern_second_is_0_for_a_solved_cube():
+    assert Cube().edge_pattern_second == 0
+
+
+def test_edge_pattern_second_is_correct_for_checkerboard():
+    cube = Cube()
+    cube.twist_by_notation(checkerboard_notation)
+
+    assert cube.edge_pattern_second == 121008
+
+
+def test_edge_pattern_second_is_always_in_the_correct_range():
+    for _ in range(TEST_SIZE):
+        cube = Cube()
+        cube.scramble()
+
+        assert 0 <= cube.edge_pattern_second <= 42_577_919

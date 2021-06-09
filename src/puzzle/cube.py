@@ -127,13 +127,18 @@ class Cube:
 
     @property
     def edges(self) -> List[str]:
+        edges = self.__unoriented_edges
+        for i in range(len(edges)):
+            if edges[i] not in self.edge_order:
+                edges[i] = edges[i][::-1]
+        return edges
+
+    @property
+    def __unoriented_edges(self) -> List[str]:
         edges = [""]*12
         for i, edge in enumerate(self.edge_order):
             for face, facelet in self.edge_coords[edge]:
                 edges[i] += self.__faces[face].getFacelet(facelet)
-            if edges[i] not in self.edge_order:
-                edges[i] = edges[i][::-1]
-
         return edges
 
     @property
@@ -252,20 +257,42 @@ class Cube:
         return coordinate + self.coordinate_corner_permutation
 
     @property
-    def edge_pattern1(self) -> int:       # 0..42,577,919
+    def edge_pattern_first(self) -> int:       # 0..42,577,919
         # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
-        edges = self.edge_order[:6]
-        _ = edges  # Removes the unused warning
-        # TODO: Implement the index calculation
-        pass
+        order = self.edge_order[:6]
+        edges = [edge if edge in order or edge[::-1] in order else "-"
+                 for edge in self.__unoriented_edges]
+
+        return self.__edge_pattern(order, edges)
 
     @property
-    def edge_pattern2(self) -> int:       # 0..42,577,919
+    def edge_pattern_second(self) -> int:       # 0..42,577,919
         # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
-        edges = self.edge_order[6:]
-        _ = edges  # Removes the unused warning
-        # TODO: Implement the index calculation
-        pass
+        order = self.edge_order[6:][::-1]
+        edges = [edge if edge in order or edge[::-1] in order else "-"
+                 for edge in self.__unoriented_edges][::-1]
+
+        return self.__edge_pattern(order, edges)
+
+    def __edge_pattern(self, order, edges) -> int:
+        count, orientation = 0, 0
+        for i in range(len(edges)):
+            if edges[i] == "-":
+                continue
+            if edges[i] not in order:
+                edges[i] = edges[i][::-1]
+                orientation += 2 ** count
+            count += 1
+
+        permutation = 0
+        for i, edge in enumerate(order):
+            ord = 0
+            for e in edges[:edges.index(edge)]:
+                if e in order[i:] or e == "-":
+                    ord += 1
+            permutation += ord * (factorial(11-i) / factorial(6))
+
+        return int(orientation * 665_280 + permutation)
 
     @classmethod
     def __fix_corner_name(self, corner: str) -> str:
