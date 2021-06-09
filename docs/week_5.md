@@ -7,6 +7,8 @@
 |       | 0.5      | Few more tests for the cube
 |       | 0.5      | Thinking about the pruning tables
 |       | 1.5      | Thinking how to index edge patters for Korf's algorithm
+| 9.6.  | 1.5      | Calculation of edge pattern indexes for Korf's algorithm
+|       | 0.5      | Scrapped refactoring
 | Total | 3.5      |
 
 ## Progress on the program  
@@ -18,6 +20,7 @@
 
 ## Challenges?  
 - Calculating the index for partial permutations.  
+- Generating the tables will take a lot of time...  
 
 ## Next week  
-- 
+- Cleaning up the code
