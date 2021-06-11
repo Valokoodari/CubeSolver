@@ -2,6 +2,7 @@
 
 [![Python application](https://github.com/Valokoodari/CubeSolver/actions/workflows/python-app.yml/badge.svg)](https://github.com/Valokoodari/CubeSolver/actions/workflows/python-app.yml)
 [![codecov](https://codecov.io/gh/Valokoodari/CubeSolver/branch/main/graph/badge.svg?token=YK2TYFN4JL)](https://codecov.io/gh/Valokoodari/CubeSolver)
+![pylint](.github/badges/pylint.svg)
 
 A Python program to compare Kociemba's algorithm, Korf's algorithm, and a basic 
 way to solve a Rubik's cube. The basic solve should be the fastest but the 
