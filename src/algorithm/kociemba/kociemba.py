@@ -2,7 +2,7 @@ import copy
 
 from typing import Tuple, List
 
-from src.algorithm.kociemba.kociemba_tables import KociembaTables
+# from src.algorithm.kociemba.kociemba_tables import KociembaTables
 from src.puzzle.cube import Cube
 
 
@@ -14,7 +14,7 @@ class Kociemba:
     def __init__(self, cube: Cube):
         self.__cube = cube
         self.__checked = []
-        self.__tables = KociembaTables
+        # self.__tables = KociembaTables
 
     def solve(self) -> Tuple[int, str]:
         if self.__cube.is_solved:

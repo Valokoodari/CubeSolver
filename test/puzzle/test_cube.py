@@ -1,31 +1,11 @@
+from test.test_variables import TEST_SIZE, SOLVED_STR, CHECKERBOARD_TURNS, \
+        CHECKERBOARD, CHECKERBOARD_NOTATION, CUBE_IN_THE_CUBE_NOTATION, \
+        CUBE_IN_THE_CUBE, CUBE_IN_THE_CUBE_EDGES
 from src.puzzle.cube import Cube
 
 
-# This determines how many random scrambles are tested in randomized tests
-TEST_SIZE = 20
-
-solved_str = """   WWW
-   WWW
-   WWW
-RRRBBBOOOGGG
-RRRBBBOOOGGG
-RRRBBBOOOGGG
-   YYY
-   YYY
-   YYY"""
-
-checkerboard_turns = (0, 0, 5, 5, 1, 1, 3, 3, 2, 2, 4, 4)
-checkerboard_notation = "U2 D2 L2 R2 F2 B2"
-checkerboard = "UDUDUDUDULRLRLRLRLFBFBFBFBFRLRLRLRLRBFBFBFBFBDUDUDUDUD"
-
-cube_in_the_cube_notation = "F L F U' R U F2 L2 U' L' B D' B' L2 U"
-cube_in_the_cube = "FFFFUUFUUDDDLLDLLDRFFRFFRRRRRURRUUUULLLLBBLBBBBBDDBDDB"
-cube_in_the_cube_edges = ["UR", "UF", "DF", "FL", "UB", "BR",
-                          "DL", "DB", "FR", "DR", "BL", "UL"]
-
-
 def test_the_str_of_a_solved_cube_is_correct():
-    assert str(Cube()) == solved_str
+    assert str(Cube()) == SOLVED_STR
 
 
 def test_a_solved_cube_is_solved():
@@ -46,27 +26,27 @@ def test_a_scrambled_cube_is_not_solved():
     assert not cube.is_solved
 
 
-def test_checkerboard_pattern_with_single_twists():
+def test_CHECKERBOARD_pattern_with_single_twists():
     cube = Cube()
 
-    for turn in checkerboard_turns:
+    for turn in CHECKERBOARD_TURNS:
         cube.twist(turn)
 
-    assert cube.cube_string == checkerboard
+    assert cube.cube_string == CHECKERBOARD
 
 
-def test_checkerboard_pattern_with_notation():
+def test_CHECKERBOARD_pattern_with_notation():
     cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
+    cube.twist_by_notation(CHECKERBOARD_NOTATION)
 
-    assert cube.cube_string == checkerboard
+    assert cube.cube_string == CHECKERBOARD
 
 
-def test_cube_in_the_cube_pattern():
+def test_CUBE_IN_THE_CUBE_pattern():
     cube = Cube()
-    cube.twist_by_notation(cube_in_the_cube_notation)
+    cube.twist_by_notation(CUBE_IN_THE_CUBE_NOTATION)
 
-    assert cube.cube_string == cube_in_the_cube
+    assert cube.cube_string == CUBE_IN_THE_CUBE
 
 
 def test_cube_is_solved_after_reset():
@@ -83,16 +63,16 @@ def test_solved_cube_is_domino():
     assert Cube().is_domino
 
 
-def test_checkerboard_is_domino():
+def test_CHECKERBOARD_is_domino():
     cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
+    cube.twist_by_notation(CHECKERBOARD_NOTATION)
 
     assert cube.is_domino
 
 
-def test_cube_in_the_cube_is_not_domino():
+def test_CUBE_IN_THE_CUBE_is_not_domino():
     cube = Cube()
-    cube.twist_by_notation(cube_in_the_cube_notation)
+    cube.twist_by_notation(CUBE_IN_THE_CUBE_NOTATION)
 
     assert not cube.is_domino
 
@@ -105,10 +85,10 @@ def test_random_cubes_in_G1_are_domino():
 
 
 def test_cube_string_of_a_solved_cube_is_correct():
-    solved_string = "UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD"
+    SOLVED_STRing = "UUUUUUUUULLLLLLLLLFFFFFFFFFRRRRRRRRRBBBBBBBBBDDDDDDDDD"
     cube_string = Cube().cube_string
 
-    assert solved_string == cube_string
+    assert SOLVED_STRing == cube_string
 
 
 def test_empty_notation_doesnt_affect_the_cube():
@@ -140,11 +120,11 @@ def test_edges_of_a_solved_cube_are_correct():
     assert Cube().edges == Cube.edge_order
 
 
-def test_edges_of_cube_in_the_cube_are_correct():
+def test_edges_of_CUBE_IN_THE_CUBE_are_correct():
     cube = Cube()
-    cube.twist_by_notation(cube_in_the_cube_notation)
+    cube.twist_by_notation(CUBE_IN_THE_CUBE_NOTATION)
 
-    assert cube.edges == cube_in_the_cube_edges
+    assert cube.edges == CUBE_IN_THE_CUBE_EDGES
 
 
 def test_random_scramble_has_one_of_each_edge():
@@ -285,16 +265,16 @@ def test_coordinate_corner_permutation_is_21021_after_R_turn():
     assert cube.coordinate_corner_permutation == 21021
 
 
-def test_coordinate_corner_permutation_is_correct_for_checkerboard():
+def test_coordinate_corner_permutation_is_correct_for_CHECKERBOARD():
     cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
+    cube.twist_by_notation(CHECKERBOARD_NOTATION)
 
     assert cube.coordinate_corner_permutation == 0
 
 
-def test_coordinate_corner_permutation_is_correct_for_cube_in_the_cube():
+def test_coordinate_corner_permutation_is_correct_for_CUBE_IN_THE_CUBE():
     cube = Cube()
-    cube.twist_by_notation(cube_in_the_cube_notation)
+    cube.twist_by_notation(CUBE_IN_THE_CUBE_NOTATION)
 
     assert cube.coordinate_corner_permutation == 25980
 
@@ -325,9 +305,9 @@ def test_coordinate_edge_permutation_is_correct_after_R2_U2_R2():
     assert cube.coordinate_edge_permutation == 60
 
 
-def test_coordinate_edge_permutation_is_correct_for_checkerboard():
+def test_coordinate_edge_permutation_is_correct_for_CHECKERBOARD():
     cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
+    cube.twist_by_notation(CHECKERBOARD_NOTATION)
 
     assert cube.coordinate_edge_permutation == 35152
 
@@ -351,9 +331,9 @@ def test_coordinate_ud_slice_phase2_is_correct_after_R2_L2():
     assert cube.coordinate_ud_slice_phase2 == 23
 
 
-def test_coordinate_ud_slice_phase2_of_checkerboard_is_correct():
+def test_coordinate_ud_slice_phase2_of_CHECKERBOARD_is_correct():
     cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
+    cube.twist_by_notation(CHECKERBOARD_NOTATION)
 
     assert cube.coordinate_ud_slice_phase2 == 16
 
@@ -414,55 +394,3 @@ def test_all_coordinates_of_a_not_solved_cube_are_never_0():
         x6 = cube.coordinate_ud_slice_phase2
 
         assert (x1, x2, x3, x4, x5, x6) != (0, 0, 0, 0, 0, 0)
-
-
-# Properties of the cube for Korf's algorithm
-
-def test_corner_pattern_is_0_for_a_solved_cube():
-    assert Cube().corner_pattern == 0
-
-
-def test_corner_patter_is_always_in_the_correct_range():
-    for _ in range(TEST_SIZE):
-        cube = Cube()
-        cube.scramble()
-
-        assert 0 <= cube.corner_pattern <= 88_179_839
-
-
-def test_edge_pattern_first_is_0_for_a_solved_cube():
-    assert Cube().edge_pattern_first == 0
-
-
-def test_edge_pattern_first_is_correct_for_checkerboard():
-    cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
-
-    assert cube.edge_pattern_first == 365136
-
-
-def test_edge_pattern_first_is_always_in_the_correct_range():
-    for _ in range(TEST_SIZE):
-        cube = Cube()
-        cube.scramble()
-
-        assert 0 <= cube.edge_pattern_first <= 42_577_919
-
-
-def test_edge_pattern_second_is_0_for_a_solved_cube():
-    assert Cube().edge_pattern_second == 0
-
-
-def test_edge_pattern_second_is_correct_for_checkerboard():
-    cube = Cube()
-    cube.twist_by_notation(checkerboard_notation)
-
-    assert cube.edge_pattern_second == 121008
-
-
-def test_edge_pattern_second_is_always_in_the_correct_range():
-    for _ in range(TEST_SIZE):
-        cube = Cube()
-        cube.scramble()
-
-        assert 0 <= cube.edge_pattern_second <= 42_577_919

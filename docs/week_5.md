@@ -14,7 +14,8 @@
 |       | 2        | Peer review
 |       | 1        | Fixing the code style with the help of pylint
 |       | 1        | Tried to add a pylint badge
-| Total | 11       |
+|       | 1        | Refactoring the code and finishing up the week
+| Total | 13       |
 
 ## Progress on the program  
 - Began implementing the tables and ran into some problems.  
