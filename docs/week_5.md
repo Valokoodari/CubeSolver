@@ -12,7 +12,8 @@
 |       | 1.5      | Began to implement the pruning tables
 | 11.6. | 1        | Pylint and instructions for Cubbli
 |       | 2        | Peer review
-| Total | 10       |
+|       | 1        | Fixing the code style with the help of pylint
+| Total | 11       |
 
 ## Progress on the program  
 - Began implementing the tables and ran into some problems.  

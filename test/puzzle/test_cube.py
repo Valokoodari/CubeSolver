@@ -29,21 +29,21 @@ def test_the_str_of_a_solved_cube_is_correct():
 
 
 def test_a_solved_cube_is_solved():
-    assert Cube().isSolved
+    assert Cube().is_solved
 
 
 def test_R2_L2_is_not_solved():
     cube = Cube()
     cube.twist_by_notation("R2 L2")
 
-    assert not cube.isSolved
+    assert not cube.is_solved
 
 
 def test_a_scrambled_cube_is_not_solved():
     cube = Cube()
     cube.scramble()
 
-    assert not cube.isSolved
+    assert not cube.is_solved
 
 
 def test_checkerboard_pattern_with_single_twists():
@@ -76,32 +76,32 @@ def test_cube_is_solved_after_reset():
     cube.twist_by_notation("U2 B D'")
     cube.reset()
 
-    assert cube.isSolved
+    assert cube.is_solved
 
 
 def test_solved_cube_is_domino():
-    assert Cube().isDomino
+    assert Cube().is_domino
 
 
 def test_checkerboard_is_domino():
     cube = Cube()
     cube.twist_by_notation(checkerboard_notation)
 
-    assert cube.isDomino
+    assert cube.is_domino
 
 
 def test_cube_in_the_cube_is_not_domino():
     cube = Cube()
     cube.twist_by_notation(cube_in_the_cube_notation)
 
-    assert not cube.isDomino
+    assert not cube.is_domino
 
 
 def test_random_cubes_in_G1_are_domino():
     for _ in range(5):
         cube = Cube()
-        cube.scramble_G1()
-        assert cube.isDomino
+        cube.scramble_g1()
+        assert cube.is_domino
 
 
 def test_cube_string_of_a_solved_cube_is_correct():
@@ -115,7 +115,7 @@ def test_empty_notation_doesnt_affect_the_cube():
     cube = Cube()
     cube.twist_by_notation("")
 
-    assert cube.isSolved
+    assert cube.is_solved
 
 
 def test_random_scramble_has_all_corners():
@@ -166,7 +166,7 @@ def test_triple_is_0_for_a_solved_cube():
 def test_triple_is_always_0_for_a_cube_in_G1():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert cube.triple == (0, 0, 0)
 
@@ -174,7 +174,7 @@ def test_triple_is_always_0_for_a_cube_in_G1():
 def test_triple_is_never_0_for_a_cube_not_in_G1():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        while cube.isDomino:
+        while cube.is_domino:
             cube.scramble()
 
         assert cube.triple != (0, 0, 0)
@@ -187,7 +187,7 @@ def test_coordinate_corner_orientation_is_0_for_a_solved_cube():
 def test_coordinate_corner_orientation_of_cube_in_G1_is_always_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert cube.coordinate_corner_orientation == 0
 
@@ -214,7 +214,7 @@ def test_coordinate_edge_orientation_is_0_for_a_solved_cube():
 def test_coordinate_edge_orientation_of_cube_in_G1_is_always_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert cube.coordinate_edge_orientation == 0
 
@@ -241,7 +241,7 @@ def test_coordinate_ud_slice_of_a_solved_cube_is_0():
 def test_coordinate_ud_slice_of_cube_in_G1_is_always_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert cube.coordinate_ud_slice == 0
 
@@ -268,7 +268,7 @@ def test_triple2_is_0_for_a_solved_cube():
 def test_triple_is_never_0_for_an_unsolved_cube():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        while cube.isSolved:
+        while cube.is_solved:
             cube.scramble()
 
         assert cube.triple != (0, 0, 0)
@@ -302,7 +302,7 @@ def test_coordinate_corner_permutation_is_correct_for_cube_in_the_cube():
 def test_coordinate_corner_permutation_is_always_between_0_and_40319():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert 0 <= cube.coordinate_corner_permutation <= 40319
 
@@ -335,7 +335,7 @@ def test_coordinate_edge_permutation_is_correct_for_checkerboard():
 def test_coordinate_edge_permutation_is_always_between_0_and_40319():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert 0 <= cube.coordinate_edge_permutation <= 40319
 
@@ -361,7 +361,7 @@ def test_coordinate_ud_slice_phase2_of_checkerboard_is_correct():
 def test_coordinate_ud_slice_phase2_is_always_between_0_and_23():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert 0 <= cube.coordinate_ud_slice_phase2 <= 23
 
@@ -380,7 +380,7 @@ def test_all_coordinates_of_a_solved_cube_are_0():
 def test_all_phase1_coordinates_of_cube_in_G1_are_always_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        cube.scramble_G1()
+        cube.scramble_g1()
 
         assert cube.coordinate_corner_orientation == 0
         assert cube.coordinate_edge_orientation == 0
@@ -390,7 +390,7 @@ def test_all_phase1_coordinates_of_cube_in_G1_are_always_0():
 def test_all_phase1_coordinates_of_cube_not_in_G1_are_never_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        while cube.isDomino:
+        while cube.is_domino:
             cube.scramble()
 
         x1 = cube.coordinate_corner_orientation
@@ -403,7 +403,7 @@ def test_all_phase1_coordinates_of_cube_not_in_G1_are_never_0():
 def test_all_coordinates_of_a_not_solved_cube_are_never_0():
     for _ in range(TEST_SIZE):
         cube = Cube()
-        while cube.isSolved:
+        while cube.is_solved:
             cube.scramble()
 
         x1 = cube.coordinate_corner_orientation

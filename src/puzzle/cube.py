@@ -1,7 +1,8 @@
-from .cube_face import CubeFace
 from math import factorial, comb
 from random import choice
 from typing import List, Tuple
+
+from src.puzzle.cube_face import CubeFace
 
 
 class Cube:
@@ -55,10 +56,10 @@ class Cube:
         direction = 1 if clockwise else -1
         for i in range(4):
             face, line, flip = self.__turns[face_number][(i + direction) % 4]
-            lines.append(self.__faces[face].getLine(line)[::flip])
+            lines.append(self.__faces[face].get_line(line)[::flip])
         for i in range(4):
             face, line, flip = self.__turns[face_number][i]
-            self.__faces[face].setLine(line, lines[i][::flip])
+            self.__faces[face].set_line(line, lines[i][::flip])
 
     def twist_by_notation(self, notation: str) -> None:
         face = ("U", "L", "F", "R", "B", "D")
@@ -82,7 +83,7 @@ class Cube:
         self.twist_by_notation(notation)
         return notation
 
-    def scramble_G1(self, count: int = 18) -> None:
+    def scramble_g1(self, count: int = 18) -> None:
         notes = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
         moves = [choice(notes) for _ in range(count)]
         notation = " ".join(moves)
@@ -119,7 +120,7 @@ class Cube:
         corners = [""]*8
         for i, corner in enumerate(self.corner_order):
             for face, facelet in self.corner_coords[corner]:
-                corners[i] += self.__faces[face].getFacelet(facelet)
+                corners[i] += self.__faces[face].get_facelet(facelet)
             if corners[i] not in self.corner_coords:
                 corners[i] = self.__fix_corner_name(corners[i])
 
@@ -128,9 +129,9 @@ class Cube:
     @property
     def edges(self) -> List[str]:
         edges = self.__unoriented_edges
-        for i in range(len(edges)):
-            if edges[i] not in self.edge_order:
-                edges[i] = edges[i][::-1]
+        for i, edge in enumerate(edges):
+            if edge not in self.edge_order:
+                edges[i] = edge[::-1]
         return edges
 
     @property
@@ -138,35 +139,35 @@ class Cube:
         edges = [""]*12
         for i, edge in enumerate(self.edge_order):
             for face, facelet in self.edge_coords[edge]:
-                edges[i] += self.__faces[face].getFacelet(facelet)
+                edges[i] += self.__faces[face].get_facelet(facelet)
         return edges
 
     @property
-    def isSolved(self) -> bool:     # Group G_2 {1}
+    def is_solved(self) -> bool:     # Group G_2 {1}
         for face in self.__faces:
-            if not face.isSolved:
+            if not face.is_solved:
                 return False
         return True
 
     @property
-    def isDomino(self) -> bool:     # Group G_1 <U, D, L2, R2, F2, B2>
-        return self.__faces[0].isDomino and self.__faces[5].isDomino
+    def is_domino(self) -> bool:     # Group G_1 <U, D, L2, R2, F2, B2>
+        return self.__faces[0].is_domino and self.__faces[5].is_domino
 
     # Coordinates for Kociemba's phase 1
     @property
     def triple(self) -> Tuple[int, int, int]:
-        x1 = self.coordinate_corner_orientation
-        x2 = self.coordinate_edge_orientation
-        x3 = self.coordinate_ud_slice
+        corner_orientation = self.coordinate_corner_orientation
+        edge_orientation = self.coordinate_edge_orientation
+        ud_slice = self.coordinate_ud_slice
 
-        return (x1, x2, x3)
+        return (corner_orientation, edge_orientation, ud_slice)
 
     @property
     def coordinate_corner_orientation(self) -> int:     # 0..2186
         coordinate, corners = 0, [""]*8
         for i, corner in enumerate(self.corner_order[:-1]):
             for face, facelet in self.corner_coords[corner]:
-                corners[i] += self.__faces[face].getFacelet(facelet)
+                corners[i] += self.__faces[face].get_facelet(facelet)
             if corners[i] not in self.corner_coords:
                 correct = self.__fix_corner_name(corners[i])
                 if corners[i][0] == correct[2]:
@@ -181,7 +182,7 @@ class Cube:
         edges, coordinate = [""]*12, 0
         for i, edge in enumerate(self.edge_order):
             for face, facelet in self.edge_coords[edge]:
-                edges[i] += self.__faces[face].getFacelet(facelet)
+                edges[i] += self.__faces[face].get_facelet(facelet)
             if edges[i] not in self.edge_order:
                 coordinate += i
 
@@ -191,11 +192,11 @@ class Cube:
     def coordinate_ud_slice(self) -> int:               # 0..494
         edges, k, coordinate = self.edges, 3, 0
 
-        for n in reversed(range(12)):
-            if edges[n] in self.edge_order[8:]:
+        for i in reversed(range(12)):
+            if edges[i] in self.edge_order[8:]:
                 k -= 1
             else:
-                coordinate += comb(n, k)
+                coordinate += comb(i, k)
             if k < 0:
                 break
 
@@ -204,11 +205,11 @@ class Cube:
     # Coordinates for Kociemba's phase 2
     @property
     def triple2(self) -> Tuple[int, int, int]:
-        x4 = self.coordinate_corner_permutation
-        x5 = self.coordinate_edge_permutation
-        x6 = self.coordinate_ud_slice_phase2
+        corner_permutation = self.coordinate_corner_permutation
+        edge_permutation = self.coordinate_edge_permutation
+        ud_slice_phase2 = self.coordinate_ud_slice_phase2
 
-        return (x4, x5, x6)
+        return (corner_permutation, edge_permutation, ud_slice_phase2)
 
     @property
     def coordinate_corner_permutation(self) -> int:     # 0..40319
@@ -216,8 +217,9 @@ class Cube:
 
         for i, corner in enumerate(corners[1:]):
             order, i = 0, i+1
-            for c in corners[:i]:
-                if c in self.corner_order[self.corner_order.index(corner)+1:]:
+            for other_corner in corners[:i]:
+                index = self.corner_order.index(corner)+1
+                if other_corner in self.corner_order[index:]:
                     order += 1
             coordinate += order * factorial(i)
 
@@ -225,25 +227,20 @@ class Cube:
 
     @property
     def coordinate_edge_permutation(self) -> int:       # 0..40319
-        coordinate, edges = 0, self.edges[:8]
-
-        for i, edge in enumerate(edges[1:]):
-            order, i = 0, i+1
-            for e in edges[:i]:
-                if e in self.edge_order[self.edge_order.index(edge)+1:]:
-                    order += 1
-            coordinate += order * factorial(i)
-
-        return coordinate
+        return self.__phase2_edge_coordinate(self.edges[:8])
 
     @property
     def coordinate_ud_slice_phase2(self) -> int:        # 0..23
-        coordinate, edges = 0, self.edges[8:]
+        return self.__phase2_edge_coordinate(self.edges[8:])
+
+    def __phase2_edge_coordinate(self, edges) -> int:
+        coordinate = 0
 
         for i, edge in enumerate(edges[1:]):
             order, i = 0, i+1
-            for e in edges[:i]:
-                if e in self.edge_order[self.edge_order.index(edge)+1:]:
+            for other_edge in edges[:i]:
+                index = self.edge_order.index(edge)+1
+                if other_edge in self.edge_order[index:]:
                     order += 1
             coordinate += order * factorial(i)
 
@@ -274,28 +271,30 @@ class Cube:
 
         return self.__edge_pattern(order, edges)
 
-    def __edge_pattern(self, order, edges) -> int:
+    @staticmethod
+    def __edge_pattern(edge_order, edges) -> int:
         count, orientation = 0, 0
-        for i in range(len(edges)):
-            if edges[i] == "-":
+        for i, edge in enumerate(edges):
+            if edge == "-":
                 continue
-            if edges[i] not in order:
-                edges[i] = edges[i][::-1]
+            if edge not in edge_order:
+                edges[i] = edge[::-1]
                 orientation += 2 ** count
             count += 1
 
         permutation = 0
-        for i, edge in enumerate(order):
-            ord = 0
-            for e in edges[:edges.index(edge)]:
-                if e in order[i:] or e == "-":
-                    ord += 1
-            permutation += ord * (factorial(11-i) / factorial(6))
+        for i, edge_name in enumerate(edge_order):
+            order = 0
+            for edge in edges[:edges.index(edge_name)]:
+                if edge in edge_order[i:] or edge == "-":
+                    order += 1
+            permutation += order * (factorial(11-i) / factorial(6))
 
         return int(orientation * 665_280 + permutation)
 
     @classmethod
-    def __fix_corner_name(self, corner: str) -> str:
-        for name in self.corner_order:
+    def __fix_corner_name(cls, corner: str) -> str:
+        for name in cls.corner_order:
             if sum([1 for char in corner if char in name]) == 3:
                 return name
+        return ""

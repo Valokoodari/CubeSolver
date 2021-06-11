@@ -16,17 +16,17 @@ class CubeFace:
 
         self.__facelets = [list(row) for row in self.__facelets]
 
-    def setLine(self, line_number: int, line: List[int]) -> None:
+    def set_line(self, line_number: int, line: List[int]) -> None:
         if line_number < self.__size:
             self.__facelets[line_number] = line
             return
         for row in range(self.__size):
             self.__facelets[row][line_number-self.__size] = line[row]
 
-    def getFacelet(self, number: int) -> str:
+    def get_facelet(self, number: int) -> str:
         return CubeFace.sides[self.__facelets[number // 3][number % 3]]
 
-    def getLine(self, line_number: int) -> List[int]:
+    def get_line(self, line_number: int) -> List[int]:
         line = [0, 0, 0]
 
         if line_number < self.__size:
@@ -50,14 +50,14 @@ class CubeFace:
         return "".join(facelets)
 
     @property
-    def isSolved(self) -> bool:
+    def is_solved(self) -> bool:
         cube_string = self.cube_string
         return cube_string.count(cube_string[0]) == len(cube_string)
 
     @property
-    def isDomino(self) -> bool:
-        for n in range(1, 5):
+    def is_domino(self) -> bool:
+        for face_number in range(1, 5):
             for row in self.__facelets:
-                if n in row:
+                if face_number in row:
                     return False
         return True

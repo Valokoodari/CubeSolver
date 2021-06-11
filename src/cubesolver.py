@@ -1,7 +1,8 @@
-from src.puzzle.cube import Cube
-from src.algorithm.kociemba.kociemba import Kociemba
 import copy
 import time
+
+from src.puzzle.cube import Cube
+from src.algorithm.kociemba.kociemba import Kociemba
 
 
 class CubeSolver:
@@ -21,17 +22,17 @@ class CubeSolver:
             if method in ["r", "q"]:
                 print()
                 break
-            elif method == "0":
+            if method == "0":
                 print("Not implemented yet.")
             elif method == "1":
-                startTime = time.time()
+                start_time = time.time()
                 solution = Kociemba(copy.deepcopy(self.__cube)).solve()
-                totalTime = time.time()-startTime
+                total_time = time.time()-start_time
                 if solution[0] < 0:
-                    print(f"Couldn't find a solution in {totalTime:.3f}" +
+                    print(f"Couldn't find a solution in {total_time:.3f}" +
                           " seconds.")
                 else:
-                    print(f"Found solution: {solution[1]} in {totalTime:.3f}" +
+                    print(f"Found solution: {solution[1]} in {total_time:.3f}" +
                           " seconds.")
             elif method == "2":
                 print("Not implemented yet.")
@@ -55,7 +56,8 @@ class CubeSolver:
 
             print(f"\n{self.__cube}\n")
 
-    def __check_notation(self, notation: str) -> bool:
+    @staticmethod
+    def __check_notation(notation: str) -> bool:
         if len(notation) == 0:
             return False
         for note in notation.split(" "):
@@ -67,7 +69,8 @@ class CubeSolver:
                 return False
         return True
 
-    def __list_commands(self) -> None:
+    @staticmethod
+    def __list_commands() -> None:
         print("Available commands:")
         print("0 - scramble (or 'g' for scramble in <U,D,L2,R2,F2,B2>")
         print("1 - solve")
@@ -84,11 +87,11 @@ class CubeSolver:
 
             if command == 'q':
                 break
-            elif command == '0':
+            if command == '0':
                 scramble = self.__cube.scramble()
                 print(f"\nScramble: {scramble}\n")
             elif command == 'g':
-                scramble = self.__cube.scramble_G1()
+                scramble = self.__cube.scramble_g1()
                 print(f"\nScramble: {scramble}\n")
             elif command == '1':
                 self.__choose_method()

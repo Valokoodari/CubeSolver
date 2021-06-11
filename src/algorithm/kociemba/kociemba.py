@@ -1,6 +1,9 @@
-from typing import Tuple, List
-from src.puzzle.cube import Cube
 import copy
+
+from typing import Tuple, List
+
+from src.algorithm.kociemba.kociemba_tables import KociembaTables
+from src.puzzle.cube import Cube
 
 
 class Kociemba:
@@ -10,28 +13,30 @@ class Kociemba:
 
     def __init__(self, cube: Cube):
         self.__cube = cube
+        self.__checked = []
+        self.__tables = KociembaTables
 
     def solve(self) -> Tuple[int, str]:
-        if self.__cube.isSolved:
+        if self.__cube.is_solved:
             return (0, "")
-        elif self.__cube.isDomino:
+        if self.__cube.is_domino:
             return self.__solve_phase(2)
-        else:
-            phase1 = self.__solve_phase(1)
-            self.__cube.twist_by_notation(phase1[1])
-            if self.__cube.isSolved or phase1[0] <= 0:
-                return phase1
-            # DEBUG: how the domino state was reached
-            print(f"Current steps: {phase1[1]}")
-            phase2 = self.__solve_phase(2)
-            return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
+
+        phase1 = self.__solve_phase(1)
+        self.__cube.twist_by_notation(phase1[1])
+        if self.__cube.is_solved or phase1[0] <= 0:
+            return phase1
+        # DEBUG: how the domino state was reached
+        print(f"Current steps: {phase1[1]}")
+        phase2 = self.__solve_phase(2)
+        return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 
     def __solve_phase(self, phase) -> Tuple[int, str]:
         print(f"-- Phase {phase} --")
         for depth in range(1, 13 if phase == 1 else 19):
             # TODO: Takes way too much memory and is slowish but still
             # better than nothing when there are no pruning tables.
-            self.__checked = []
+            self.__checked.clear()
             # DEBUG: current solcing depth
             print(f"Depth: {depth:2d}", end="", flush=True)
             result = self.__search(phase, [], copy.deepcopy(self.__cube), depth)
@@ -44,7 +49,7 @@ class Kociemba:
     def __search(self, phase, notes: List[str], cube: Cube,
                  depth: int) -> Tuple[int, str]:
         if depth == 0:
-            if phase == 1 and cube.isDomino or cube.isSolved:
+            if phase == 1 and cube.is_domino or cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
         for move in self.phase1_moves if phase == 1 else self.phase2_moves:
