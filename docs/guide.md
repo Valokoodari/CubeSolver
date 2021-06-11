@@ -26,4 +26,4 @@ $ make install
 Now you need to add the Python 3.9.5 to your path with the following command  
 `export PATH="$HOME/.local/bin:$PATH"`  
 You may also add the command to the end of your `~/.profile` (or similar file) 
-to also use the custom Python version instead of the default one.
+to use the custom Python version as the default one.  

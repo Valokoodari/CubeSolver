@@ -35,4 +35,3 @@
 - Make pruning tables smaller in memory and as files  
 - Generate the pruning tables  
 - Finish both algorithms in terms of functionality.  
-- Cleaning up the code  
