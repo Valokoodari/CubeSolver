@@ -32,6 +32,20 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --exclude=venv --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --exclude=venv --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
+    - name: Lint with pylint
+      run: |
+        source venv/bin/activate
+        mkdir ./pylint
+        pylint src --output-format=text | tee ./pylint/pylint.log || pylint-exit $?
+        PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.log)
+        anybadge -l pylint -v $PYLINT_SCORE -f pylint.svg 0=black 1=maroon 3=red 5=orange 7=yellow 8=yellowgreen 9=green 10=lime
+        echo "Pylint score is $PYLINT_SCORE"
+    - name: Upload the pylint badge
+      uses: actions/upload-artifact@v2
+      with:
+        name: pylint.svg
+        path: pylint/
+        if-no-file-found: warn
     - name: Test with pytest
       run: |
         source venv/bin/activate
