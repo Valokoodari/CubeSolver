@@ -13,6 +13,7 @@
 | 11.6. | 1        | Pylint and instructions for Cubbli
 |       | 2        | Peer review
 |       | 1        | Fixing the code style with the help of pylint
+|       | 1        | Tried to add a pylint badge
 | Total | 11       |
 
 ## Progress on the program  
