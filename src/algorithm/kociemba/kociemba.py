@@ -13,7 +13,7 @@ class Kociemba:
 
     def __init__(self, cube: Cube):
         self.__cube = cube
-        self.__checked = []
+        self.__checked = set()
         # self.__tables = KociembaTables
 
     def solve(self) -> Tuple[int, str]:
@@ -58,8 +58,8 @@ class Kociemba:
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
             if new_cube.cube_string in self.__checked:
-                break
-            self.__checked.append(new_cube.cube_string)
+                continue
+            self.__checked.add(new_cube.cube_string)
             result = self.__search(phase, notes + [move], new_cube, depth - 1)
             if result[0] > 0:
                 return result
