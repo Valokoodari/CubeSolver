@@ -13,7 +13,8 @@ class Kociemba:
 
     def __init__(self, cube: Cube):
         self.__cube = cube
-        self.__checked = set()
+        # self.__checked = set()
+        self.__checked = 0
         # self.__tables = KociembaTables
 
     def solve(self) -> Tuple[int, str]:
@@ -32,23 +33,23 @@ class Kociemba:
         return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 
     def __solve_phase(self, phase) -> Tuple[int, str]:
-        print(f"-- Phase {phase} --")
+        print(f"\n-- Phase {phase} --")
         for depth in range(1, 13 if phase == 1 else 19):
-            # TODO: Takes way too much memory and is slowish but still
-            # better than nothing when there are no pruning tables.
-            self.__checked.clear()
-            # DEBUG: current solcing depth
-            print(f"Depth: {depth:2d}", end="", flush=True)
-            result = self.__search(phase, [], copy.deepcopy(self.__cube), depth)
+            # self.__checked.clear()
+            self.__checked = 0
+            result = self.__search(phase, [], copy.deepcopy(self.__cube),
+                                   depth, 0)
             # DEBUG: cube orientations checked with current depth
-            print(f", checked: {len(self.__checked)}")
+            print(f"Depth: {depth:2d}, checked: {self.__checked}  ")
             if result[0] >= 0:
                 return result
         return (-1, "")
 
     def __search(self, phase, notes: List[str], cube: Cube,
-                 depth: int) -> Tuple[int, str]:
-        if depth == 0:
+                 depth: int, distance: int) -> Tuple[int, str]:
+        if self.__checked % 10000 == 0:
+            print(f"Depth: {depth:2d}, checked: {self.__checked}+", end="\r")
+        if depth == distance:
             if phase == 1 and cube.is_domino or cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
@@ -57,10 +58,12 @@ class Kociemba:
                 continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
-            if new_cube.cube_string in self.__checked:
-                continue
-            self.__checked.add(new_cube.cube_string)
-            result = self.__search(phase, notes + [move], new_cube, depth - 1)
+            # if new_cube.cube_string in self.__checked:
+            #     continue
+            # self.__checked.add(new_cube.cube_string)
+            self.__checked += 1
+            result = self.__search(phase, notes + [move], new_cube,
+                                   depth, distance + 1)
             if result[0] > 0:
                 return result
         return (-1, "")

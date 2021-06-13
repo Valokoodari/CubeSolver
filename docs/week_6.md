@@ -5,7 +5,8 @@
 | :---: | :---     | :---
 | 12.6. | 1        | Finally figured out the bug that some orientations are not checked...
 | 13.6. | 2.5      | Inefficient table generation for Korf's algorithm and some other small changes.
-| Total | 3.5      |
+|       | 0.5      | Continuous progress reporting for Kociemba's algorithm.
+| Total | 4        |
 
 ## Progress on the program  
 - Fixed the most annoying bug... By changing "break" to "continue"... Argh...  
