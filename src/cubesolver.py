@@ -2,6 +2,7 @@ import copy
 import time
 
 from src.puzzle.cube import Cube
+from src.algorithm.korf.korf import Korf
 from src.algorithm.kociemba.kociemba import Kociemba
 
 
@@ -35,7 +36,15 @@ class CubeSolver:
                     print(f"Found solution: {solution[1]} in {total_time:.3f}" +
                           " seconds.")
             elif method == "2":
-                print("Not implemented yet.")
+                start_time = time.time()
+                solution = Korf(copy.deepcopy(self.__cube)).solve()
+                total_time = time.time()-start_time
+                if solution[0] < 0:
+                    print(f"Couldn't find a solution in {total_time:3f}" +
+                          " seconds.")
+                else:
+                    print(f"Found solution: {solution[1]} in {total_time:.3f}" +
+                          " seconds.")
             else:
                 print("Invalid option")
 

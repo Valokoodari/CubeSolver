@@ -46,6 +46,12 @@ class Cube:
         "BR": ((4, 3), (3, 5))
     }
 
+    moves = [
+        move + modifier
+        for move in ["U", "L", "F", "R", "B", "D"]
+        for modifier in ["", "'", "2"]
+    ]
+
     def __init__(self):
         self.__faces = [CubeFace(3, i) for i in range(6)]
 

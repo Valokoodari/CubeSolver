@@ -9,7 +9,7 @@ class KociembaTables:
         self.__phase1 = [-1]*140_908_410
         self.__phase2 = [-1]*111_605_760
 
-    def generate_tables(self):
+    def set_distance(self, phase: int, cube: Cube) -> bool:
         pass
 
     def save_tables(self) -> None:

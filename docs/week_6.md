@@ -4,16 +4,21 @@
 | Date  | Time (h) | Task
 | :---: | :---     | :---
 | 12.6. | 1        | Finally figured out the bug that some orientations are not checked...
-| Total | 1        |
+| 13.6. | 2.5      | Inefficient table generation for Korf's algorithm and some other small changes.
+| Total | 3.5      |
 
 ## Progress on the program  
-- Fixed the most annoying bug... By changing "break" to "continue"... Argh...
+- Fixed the most annoying bug... By changing "break" to "continue"... Argh...  
+- Some kind of table generation for Korf's algorithm.  
 
 ## What did I learn?  
-- Always check the code for breaks which shouldn't be there...
+- Always check the code for breaks which shouldn't be there...  
 
 ## Challenges?  
-- Not yet :)
+- Pylint can't handle large lists  
+- The temporary pruning requires over 16 GB of memory at depth 8 (out of 12) in 
+  phase 1 and depth 15 (out of 18) in phase 2.  
+- Pruning while generating pruning tables is hard  
 
 ## Next week  
-- Testing on Windows?
+- Testing on Windows?  
