@@ -1,3 +1,5 @@
+"""A module to store all of the contant values required by the tests."""
+
 # This determines how many random scrambles are tested in randomized tests
 TEST_SIZE = 20
 

@@ -1,3 +1,5 @@
+"""A module to contain the main class of Korf's algorithm."""
+
 import copy
 
 from typing import Tuple
@@ -8,21 +10,30 @@ from src.algorithm.korf.korf_tables import KorfTables
 
 
 class Korf:
+    """A class for solving a Rubik's cube with optimal moves using Korf's
+    algorithm."""
     def __init__(self, cube: Cube):
-        self.__cube = cube
+        self.__cube = copy.deepcopy(cube)
         self.__tables = KorfTables()
-        try:
+        try:    # Try to load already generated pruning tables
             self.__tables.load_tables()
-        except FileNotFoundError:
+        except FileNotFoundError:   # Generate the pruning tables
             print("\nGenerating pruning tables...\n")
-            self.generate_tables()
-            self.__tables.save_tables()
+            # self.generate_tables()
+            # self.__tables.save_tables()
+        self.__min_distance = self.__tables.get_distance(
+            self.coordinate(self.__cube)
+        )
 
     def solve(self) -> Tuple[int, str]:
+        """A function to solve the cube with Korf's algorithm (IDA*)."""
         # TODO: Implement the search
-        return (-1, "Solving not implemented yet!")
+        return (-1, "Solving not implemented yet! Estimated minimum distance:" +
+                    f" {self.__min_distance}")
 
     def generate_tables(self) -> None:
+        """A function to generate the pruning tables for Korf's algorithm by
+        iterating through search depths from 0 to 20."""
         cube = Cube()
 
         for depth in range(0, 21):
@@ -33,6 +44,13 @@ class Korf:
             self.__tables.print_completeness()
 
     def generation_search(self, cube: Cube, depth: int, distance: int) -> None:
+        """A function to search all of the patterns indexes to generate the
+        pruning tables required by the Korf's algorithm to solve any cube in
+        less than about 10^12 years.
+
+        Unfortunately this function currently takes about 10^13 years with depth
+        20 to finish on a modern desktop computer."""
+        # FIXME: Optimize to run in less than a week.
         if depth <= 0:
             self.__tables.set_distance(self.coordinate(cube), distance)
             return
@@ -44,6 +62,8 @@ class Korf:
 
     @classmethod
     def coordinate(cls, cube: Cube) -> Tuple[int, int, int]:
+        """A function to return a single tuple containing all of the pattern
+        indexes used by Korf's algorithm."""
         return (
             cls.corner_pattern(cube),
             cls.edge_pattern_first(cube),
@@ -51,14 +71,25 @@ class Korf:
         )
 
     @staticmethod
-    def corner_pattern(cube: Cube) -> int:      # 0..88,179,839
-        # 2187 orientations, 40320 permutations -> 88,179,840 states
+    def corner_pattern(cube: Cube) -> int:
+        """A function to calculate the corner pattern index of a cube for the
+        Korf's algorithm.
+
+        The pattern is a combination of the corner orientation (0..2,086) and
+        permutation indexes (0..40,319) which means that the value is always
+        between 0 and 88,179,839."""
         coordinate = cube.coordinate_corner_orientation * 40_320
         return coordinate + cube.coordinate_corner_permutation
 
     @classmethod
-    def edge_pattern_first(cls, cube: Cube) -> int:       # 0..42,577,919
-        # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
+    def edge_pattern_first(cls, cube: Cube) -> int:
+        """A function to calculate the edge pattern index for the first six
+        edges of a cube for Korf's algorithm.
+
+        The pattern is a combination of the orientation (0..63) and the
+        permutation (0..665,219) of the first six edges of the cube. Which
+        means that the value of index of the pattern is always between 0 and
+        42,577,919."""
         order = cube.edge_order[:6]
         edges = [edge if edge in order or edge[::-1] in order else "-"
                  for edge in cube.unoriented_edges]
@@ -66,8 +97,14 @@ class Korf:
         return cls.__edge_pattern(order, edges)
 
     @classmethod
-    def edge_pattern_second(cls, cube: Cube) -> int:       # 0..42,577,919
-        # 2^6 = 64 orientations, 12!/6! = 665,280 permutations -> 42,577,920
+    def edge_pattern_second(cls, cube: Cube) -> int:
+        """A function to calculate the edge pattern index for the last six
+        edges of a cube for Korf's algorithm.
+
+        The pattern is a combination of the orientation (0..63) and the
+        permutation (0..665,219) of the last six edges of the cube. Which
+        means that the value of index of the pattern is always between 0 and
+        42,577,919."""
         order = Cube().edge_order[6:][::-1]
         edges = [edge if edge in order or edge[::-1] in order else "-"
                  for edge in cube.unoriented_edges][::-1]
@@ -76,6 +113,9 @@ class Korf:
 
     @staticmethod
     def __edge_pattern(edge_order, edges) -> int:
+        """A function to calculate the edge pattern index for the given edges.
+        This is only intended for use by the functions edge_pattern_first and
+        edge_pattern_second."""
         count, orientation = 0, 0
         for i, edge in enumerate(edges):
             if edge == "-":
