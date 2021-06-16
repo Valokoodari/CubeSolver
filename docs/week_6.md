@@ -9,7 +9,8 @@
 | 14.6. | 1.5      | Docstrings for Korf's algorithm.
 |       | 0.5      | Docstrings for Kociemba's algorithm.
 |       | 0.5      | Docstrings for everything except the data structures.
-| Total | 6.5      |
+|       | 1        | Docstrings for the Cube and CubeFace data structures.
+| Total | 7.5      |
 
 ## Progress on the program  
 - Fixed the most annoying bug... By changing "break" to "continue"... Argh...  

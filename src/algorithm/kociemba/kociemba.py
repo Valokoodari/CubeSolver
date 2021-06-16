@@ -64,7 +64,7 @@ class Kociemba:
                 return (len(notes), " ".join(notes))
             return (-1, "")
         for move in self.phase1_moves if phase == 1 else self.phase2_moves:
-            if self.__skip_move(notes, move):
+            if self.skip_move(notes, move):
                 continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
@@ -79,7 +79,7 @@ class Kociemba:
         return (-1, "")
 
     @staticmethod
-    def __skip_move(notes: List[str], move):
+    def skip_move(notes: List[str], move) -> bool:
         """A function the check if the current move should be skipped based on
         previous moves to prevent searching through the same orientations
         multiple times."""

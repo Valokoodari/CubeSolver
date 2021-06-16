@@ -22,8 +22,6 @@ class Simple:
 
     def __top_cross(self):
         """A function to solve the top cross of a cube."""
-        pass
 
     def __top_corners(self):
         """A function to solve the top corners of a cube."""
-        pass
