@@ -8,7 +8,8 @@
 |       | 0.5      | Continuous progress reporting for Kociemba's algorithm.
 | 14.6. | 1.5      | Docstrings for Korf's algorithm.
 |       | 0.5      | Docstrings for Kociemba's algorithm.
-| Total | 6        |
+|       | 0.5      | Docstrings for everything except the data structures.
+| Total | 6.5      |
 
 ## Progress on the program  
 - Fixed the most annoying bug... By changing "break" to "continue"... Argh...  

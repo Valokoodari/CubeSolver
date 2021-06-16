@@ -1,3 +1,8 @@
+"""The main module of the CubeSolver application.
+
+The purpose for this program is to compare different methods of solving the
+Rubik's cube in terms of turns and time required."""
+
 import copy
 import time
 
@@ -7,6 +12,11 @@ from src.algorithm.kociemba.kociemba import Kociemba
 
 
 class CubeSolver:
+    """A class providing the UI of the CubeSolver application.
+
+    The method check_notation can be used to check if a string of simple cube
+    notations is valid. And the UI itself can be started by running the method
+    start."""
     def __init__(self):
         self.__cube = Cube()
 
@@ -58,7 +68,7 @@ class CubeSolver:
                 print()
                 break
 
-            if self.__check_notation(notation):
+            if self.check_notation(notation):
                 self.__cube.twist_by_notation(notation)
             else:
                 print("Invalid notation!")
@@ -66,7 +76,12 @@ class CubeSolver:
             print(f"\n{self.__cube}\n")
 
     @staticmethod
-    def __check_notation(notation: str) -> bool:
+    def check_notation(notation: str) -> bool:
+        """A function to check the validity of a string containing cube
+        notation.
+
+        For example the notation 'F2 B2 L2 R2 D2 U2' is valid but 'U3', 'U-1',
+        'M', 'X', 'Y', or 'Z' are not valid."""
         if len(notation) == 0:
             return False
         for note in notation.split(" "):
@@ -88,6 +103,7 @@ class CubeSolver:
         print("q - quit")
 
     def start(self) -> None:
+        """A function containing the main loop for the programs UI."""
         while True:
             print(f"{self.__cube}\n")
             self.__list_commands()
