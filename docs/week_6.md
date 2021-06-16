@@ -7,7 +7,8 @@
 | 13.6. | 2.5      | Inefficient table generation for Korf's algorithm and some other small changes.
 |       | 0.5      | Continuous progress reporting for Kociemba's algorithm.
 | 14.6. | 1.5      | Docstrings for Korf's algorithm.
-| Total | 4        |
+|       | 0.5      | Docstrings for Kociemba's algorithm.
+| Total | 6        |
 
 ## Progress on the program  
 - Fixed the most annoying bug... By changing "break" to "continue"... Argh...  
@@ -17,7 +18,7 @@
 - Always check the code for breaks which shouldn't be there...  
 
 ## Challenges?  
-- Pylint can't handle large lists  
+- Pylint can't handle large lists (can't lint korf_tables.py)  
 - The temporary pruning requires over 16 GB of memory at depth 8 (out of 12) in 
   phase 1 and depth 15 (out of 18) in phase 2.  
 - Pruning while generating pruning tables is hard  

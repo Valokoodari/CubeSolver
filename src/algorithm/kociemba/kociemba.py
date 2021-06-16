@@ -1,3 +1,5 @@
+"""A module to contain the main class of Kociemba's algorithm."""
+
 import copy
 
 from typing import Tuple, List
@@ -7,6 +9,8 @@ from src.puzzle.cube import Cube
 
 
 class Kociemba:
+    """A class for solving a Rubik's cube with almost optimal moves using
+    Kociemba's algorithm."""
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
     phase1_moves = phase2_moves + ["L", "L'", "R", "R'", "F", "F'", "B", "B'"]
     pairs = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
@@ -18,6 +22,7 @@ class Kociemba:
         # self.__tables = KociembaTables
 
     def solve(self) -> Tuple[int, str]:
+        """A function to solve the cube with Kociemba's algorithm (two-phase)"""
         if self.__cube.is_solved:
             return (0, "")
         if self.__cube.is_domino:
@@ -27,19 +32,20 @@ class Kociemba:
         self.__cube.twist_by_notation(phase1[1])
         if self.__cube.is_solved or phase1[0] <= 0:
             return phase1
-        # DEBUG: how the domino state was reached
+        # FIXME: debug print, how the domino state was reached
         print(f"Current steps: {phase1[1]}")
         phase2 = self.__solve_phase(2)
         return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 
     def __solve_phase(self, phase) -> Tuple[int, str]:
+        """A function to handle the iterative deepening for the search."""
         print(f"\n-- Phase {phase} --")
         for depth in range(1, 13 if phase == 1 else 19):
             # self.__checked.clear()
             self.__checked = 0
             result = self.__search(phase, [], copy.deepcopy(self.__cube),
                                    depth, 0)
-            # DEBUG: cube orientations checked with current depth
+            # FIXME: debug print, cube orientations checked with current depth
             print(f"Depth: {depth:2d}, checked: {self.__checked}  ")
             if result[0] >= 0:
                 return result
@@ -47,6 +53,10 @@ class Kociemba:
 
     def __search(self, phase, notes: List[str], cube: Cube,
                  depth: int, distance: int) -> Tuple[int, str]:
+        """A function to actually perform the search to the current search depth
+        by using recursion. Also contains the pruning if the minimum distance
+        increases"""
+        # TODO: Add the actual pruning based on the minimum distance.
         if self.__checked % 10000 == 0:
             print(f"Depth: {depth:2d}, checked: {self.__checked}+", end="\r")
         if depth == distance:
@@ -70,6 +80,9 @@ class Kociemba:
 
     @staticmethod
     def __skip_move(notes: List[str], move):
+        """A function the check if the current move should be skipped based on
+        previous moves to prevent searching through the same orientations
+        multiple times."""
         if len(notes) > 0:
             # Don't turn the same side twice in a row. E.g. don't allow F F
             if move[0] == notes[-1][0]:

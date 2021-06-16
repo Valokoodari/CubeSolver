@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 class KorfTables:
-    """A class to handle the short and long term storage of the pruning tables
-    for Korf's algorithm and also the checking of the minimum distance to
+    """A class to handle the short and long term storage for the pruning tables
+    of the Korf's algorithm and also the checking of the minimum distance to
     solved."""
     def __init__(self):
         self.__path = Path(__file__).parent
