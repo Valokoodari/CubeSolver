@@ -2,7 +2,7 @@
 
 import copy
 
-from typing import Tuple
+from typing import Tuple, List
 from math import factorial
 
 from src.puzzle.cube import Cube
@@ -15,11 +15,13 @@ class Korf:
     def __init__(self, cube: Cube):
         self.__cube = copy.deepcopy(cube)
         self.__tables = KorfTables()
+        self.__checked = 0
+        self.__skipped = 0
         try:    # Try to load already generated pruning tables
             self.__tables.load_tables()
         except FileNotFoundError:   # Generate the pruning tables
             print("\nGenerating pruning tables...\n")
-            # self.generate_tables()
+            self.generate_tables()
             # self.__tables.save_tables()
         self.__min_distance = self.__tables.get_distance(
             self.coordinate(self.__cube)
@@ -27,9 +29,49 @@ class Korf:
 
     def solve(self) -> Tuple[int, str]:
         """A function to solve the cube with Korf's algorithm (IDA*)."""
-        # TODO: Implement the search
-        return (-1, "Solving not implemented yet! Estimated minimum distance:" +
-                    f" {self.__min_distance}")
+        if self.__cube.is_solved:
+            return (0, "")
+        estimate = self.__tables.get_distance(self.coordinate(self.__cube))
+        for depth in range(estimate if estimate >= 0 else 1, 21):
+            self.__checked, self.__skipped = 0, 0
+            if estimate < 0:
+                estimate = 21
+            result = self.__search([], self.__cube, depth, 0, estimate)
+            if result[0] != -1:
+                return result
+            print(f"Depth: {depth:2d}, checked: {self.__checked:,}, " +
+                  f"(skipped: {self.__skipped:,}+)    ")
+
+        return (-1, "")
+
+    def __search(self, notes: List[str], cube: Cube, depth: int,
+                 distance: int, estimate: int) -> Tuple[int, str]:
+        """A function to actually perform the search to the current search depth
+        by using recursion. Also contains the pruning if the minimum distance
+        increases"""
+        if self.__checked % 10000 == 0:
+            print(f"Depth: {depth:2d}, checked: {self.__checked:,}+, " +
+                  f"(skipped: {self.__skipped:,}+)", end="\r")
+        if distance >= depth:
+            if cube.is_solved:
+                return (len(notes), " ".join(notes))
+            return (-1, "")
+        for move in cube.moves:
+            if Cube.skip_move(notes, move):
+                self.__skipped += 1
+                continue
+            new_cube = copy.deepcopy(cube)
+            new_cube.twist_by_notation(move)
+            new_estimate = self.__tables.get_distance(self.coordinate(cube))
+            if estimate != -1 and estimate < new_estimate:
+                self.__skipped += 1
+                continue
+            self.__checked += 1
+            result = self.__search(notes + [move], new_cube, depth,
+                                   distance + 1, estimate)
+            if result[0] > 0:
+                return result
+        return (-1, "")
 
     def generate_tables(self) -> None:
         """A function to generate the pruning tables for Korf's algorithm by
@@ -38,12 +80,13 @@ class Korf:
 
         for depth in range(0, 21):
             print(f"Generation Depth: {depth}")
-            self.generation_search(cube, depth, 0)
+            self.generation_search([], cube, depth, 0)
             if self.__tables.is_complete:
                 break
             self.__tables.print_completeness()
 
-    def generation_search(self, cube: Cube, depth: int, distance: int) -> None:
+    def generation_search(self, notes: List[str], cube: Cube, depth: int,
+                          distance: int) -> None:
         """A function to search all of the patterns indexes to generate the
         pruning tables required by the Korf's algorithm to solve any cube in
         less than about 10^12 years.
@@ -51,14 +94,19 @@ class Korf:
         Unfortunately this function currently takes about 10^13 years with depth
         20 to finish on a modern desktop computer."""
         # FIXME: Optimize to run in less than a week.
-        if depth <= 0:
+        if distance >= depth:
             self.__tables.set_distance(self.coordinate(cube), distance)
             return
         for move in cube.moves:
-            distance += 1
+            if Cube.skip_move(notes, move):
+                continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
-            self.generation_search(new_cube, depth-1, distance+1)
+            estimate = self.__tables.get_distance(self.coordinate(new_cube))
+            if estimate != -1 and estimate < distance:
+                # print(f"Depth: {depth}, distance: {distance}, move: {move}")
+                continue
+            self.generation_search(notes+[move], new_cube, depth, distance+1)
 
     @classmethod
     def coordinate(cls, cube: Cube) -> Tuple[int, int, int]:

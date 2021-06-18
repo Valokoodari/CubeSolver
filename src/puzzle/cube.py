@@ -23,6 +23,8 @@ class Cube:
     edge_order = ["UR", "UF", "UL", "UB", "DR", "DF",
                   "DL", "DB", "FR", "FL", "BL", "BR"]
 
+    move_pairs = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
+
     corner_coords = {   # (face, facelet)
         "URF": ((0, 8), (3, 0), (2, 2)),
         "UFL": ((0, 6), (2, 0), (1, 2)),
@@ -314,3 +316,23 @@ class Cube:
             if sum([1 for char in corner if char in name]) == 3:
                 return name
         return ""
+
+    @classmethod
+    def skip_move(cls, notes: List[str], move) -> bool:
+        """A function the check if the current move should be skipped based on
+        previous moves to prevent searching through the same orientations
+        multiple times."""
+        if len(notes) > 0:
+            # Don't turn the same side twice in a row. E.g. don't allow F F
+            if move[0] == notes[-1][0]:
+                return True
+            # Don't test for example both R L and L R
+            if move[0] in list(cls.move_pairs)[:3]:
+                if notes[-1][0] == cls.move_pairs[move[0]]:
+                    return True
+        # Don't turn the same side if the side has not changed at all
+        if len(notes) > 1:
+            if move[0] == cls.move_pairs[notes[-1][0]] == notes[-2][0]:
+                return True
+
+        return False

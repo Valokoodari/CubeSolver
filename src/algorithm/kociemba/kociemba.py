@@ -12,8 +12,6 @@ class Kociemba:
     """A class for solving a Rubik's cube with almost optimal moves using
     Kociemba's algorithm."""
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
-    phase1_moves = phase2_moves + ["L", "L'", "R", "R'", "F", "F'", "B", "B'"]
-    pairs = {"U": "D", "L": "R", "F": "B", "D": "U", "R": "L", "B": "F"}
 
     def __init__(self, cube: Cube):
         self.__cube = cube
@@ -46,7 +44,7 @@ class Kociemba:
             result = self.__search(phase, [], copy.deepcopy(self.__cube),
                                    depth, 0)
             # FIXME: debug print, cube orientations checked with current depth
-            print(f"Depth: {depth:2d}, checked: {self.__checked}  ")
+            print(f"Depth: {depth:2d}, checked: {self.__checked:,}  ")
             if result[0] >= 0:
                 return result
         return (-1, "")
@@ -58,13 +56,13 @@ class Kociemba:
         increases"""
         # TODO: Add the actual pruning based on the minimum distance.
         if self.__checked % 10000 == 0:
-            print(f"Depth: {depth:2d}, checked: {self.__checked}+", end="\r")
-        if depth == distance:
+            print(f"Depth: {depth:2d}, checked: {self.__checked:,}+", end="\r")
+        if depth <= distance:
             if phase == 1 and cube.is_domino or cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
-        for move in self.phase1_moves if phase == 1 else self.phase2_moves:
-            if self.skip_move(notes, move):
+        for move in Cube.moves if phase == 1 else self.phase2_moves:
+            if Cube.skip_move(notes, move):
                 continue
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
@@ -77,23 +75,3 @@ class Kociemba:
             if result[0] > 0:
                 return result
         return (-1, "")
-
-    @staticmethod
-    def skip_move(notes: List[str], move) -> bool:
-        """A function the check if the current move should be skipped based on
-        previous moves to prevent searching through the same orientations
-        multiple times."""
-        if len(notes) > 0:
-            # Don't turn the same side twice in a row. E.g. don't allow F F
-            if move[0] == notes[-1][0]:
-                return True
-            # Don't test for example both R L and L R
-            if move[0] in list(Kociemba.pairs)[:3]:
-                if notes[-1][0] == Kociemba.pairs[move[0]]:
-                    return True
-        # Don't turn the same side if the side has not changed at all
-        if len(notes) > 1:
-            if move[0] == Kociemba.pairs[notes[-1][0]] == notes[-2][0]:
-                return True
-
-        return False

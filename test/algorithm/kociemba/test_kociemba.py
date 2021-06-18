@@ -33,7 +33,7 @@ def test_cubes_in_G1_with_4_random_moves_are_solved():
 
 
 def test_all_cubes_with_one_move_are_solved():
-    for move in Kociemba.phase1_moves:
+    for move in Cube.moves:
         cube = Cube()
         cube.twist_by_notation(move)
 
