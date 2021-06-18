@@ -11,7 +11,8 @@
 |       | 0.5      | Docstrings for everything except the data structures.
 |       | 1        | Docstrings for the Cube and CubeFace data structures.
 | 18.6. | 1        | Implemented the search with pruning for Korf's algorithm.
-| Total | 7.5      |
+|       | 2        | Peer review.
+| Total | 10.5     |
 
 ## Progress on the program  
 - Fixed the most annoying bug... By changing "break" to "continue"... Argh...  
@@ -27,7 +28,8 @@
 - The temporary pruning requires over 16 GB of memory at depth 8 (out of 12) in 
   phase 1 and depth 15 (out of 18) in phase 2.  
 - Pruning while generating pruning tables is hard  
-- Can't figure out how to calculate the sym-coordinates for Kociemba's algorithm.  
+- Can't figure out how to calculate the sym-coordinates for Kociemba's 
+  algorithm.  
 
 ## Next week  
 - Try to finish the program. :/

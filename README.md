@@ -24,6 +24,7 @@ solved state.
 - [Week 3](docs/week_3.md)  
 - [Week 4](docs/week_4.md)  
 - [Week 5](docs/week_5.md)  
+- [Week 6](docs/week_6.md)  
 
 ### Run the program
 ```
