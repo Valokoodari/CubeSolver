@@ -2,7 +2,7 @@
 
 
 ## Structure  
-`<insert a nice picture here>`
+![A picture of the project structure.](img/structure.png)
 
 ## Required moves  
 - Me (a human): usually 100-150 moves  

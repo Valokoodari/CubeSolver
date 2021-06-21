@@ -1,8 +1,7 @@
 """A module to contain the class KociembaTables."""
 
 from pathlib import Path
-
-from src.puzzle.cube import Cube
+from typing import Tuple
 
 
 class KociembaTables:
@@ -14,7 +13,7 @@ class KociembaTables:
         self.__phase1 = [-1]*140_908_410
         self.__phase2 = [-1]*111_605_760
 
-    def set_distance(self, phase: int, cube: Cube) -> bool:
+    def set_distance(self, phase: int, coord: Tuple[int, int, int]) -> bool:
         """A function to set the minimum distance values to the pruning tables
         based on the given cube."""
         # TODO: implement this setter, requires the calculation of
@@ -38,7 +37,7 @@ class KociembaTables:
         with open(f"{self.__path}/tables/phase2.txt", 'w') as file:
             self.__phase2 = [int(line) for line in file.readlines()]
 
-    def get_distance(self, phase: int, cube: Cube) -> int:
+    def get_distance(self, phase: int, coord: Tuple[int, int, int]) -> int:
         """A function to get the minimum distance to the next group for the
         given Cube."""
         # TODO: implement this getter, requires the calculation of
