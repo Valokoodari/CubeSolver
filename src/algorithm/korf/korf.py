@@ -1,6 +1,7 @@
 """A module to contain the main class of Korf's algorithm."""
 
 import copy
+import os
 
 from typing import Tuple, List
 from math import factorial
@@ -17,12 +18,12 @@ class Korf:
         self.__tables = KorfTables()
         self.__checked = 0
         self.__skipped = 0
-        try:    # Try to load already generated pruning tables
-            self.__tables.load_tables()
-        except FileNotFoundError:   # Generate the pruning tables
-            print("\nGenerating pruning tables...\n")
-            self.generate_tables()
-            # self.__tables.save_tables()
+        if "SKIP_TABLES" not in os.environ:
+            try:    # Try to load already generated pruning tables
+                self.__tables.load_tables()
+            except FileNotFoundError:   # Generate the pruning tables
+                print("\nGenerating pruning tables...\n")
+                self.generate_tables()
         self.__min_distance = self.__tables.get_distance(
             self.coordinate(self.__cube)
         )
@@ -40,7 +41,7 @@ class Korf:
             if result[0] != -1:
                 return result
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}, " +
-                  f"(skipped: {self.__skipped:,}+)    ")
+                  f"(pruned: {self.__skipped:,}+)    ")
 
         return (-1, "")
 
@@ -51,7 +52,7 @@ class Korf:
         increases"""
         if self.__checked % 10000 == 0:
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}+, " +
-                  f"(skipped: {self.__skipped:,}+)", end="\r")
+                  f"(pruned: {self.__skipped:,}+)", end="\r")
         if distance >= depth:
             if cube.is_solved:
                 return (len(notes), " ".join(notes))
