@@ -6,10 +6,10 @@ run the run.sh script.
 ./run.sh
 ```
 If you don't want to generate the pruning tables set the environment variable
-`SKIP_TABLES` to any value.  
+`NO_TABLES` to any value.  
 For example:
 ```
-SKIP_TABLES=1 ./run.sh
+NO_TABLES=1 ./run.sh
 ```
 
 ### Run a binary (not updated)

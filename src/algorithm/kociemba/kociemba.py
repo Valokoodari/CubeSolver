@@ -14,10 +14,13 @@ class Kociemba:
     phase2_moves = ["U", "U'", "U2", "D", "D'", "D2", "L2", "R2", "F2", "B2"]
 
     def __init__(self, cube: Cube):
-        self.__cube = cube
+        self.__cube = copy.deepcopy(cube)
         self.__checked = 0
         self.__skipped = 0
         # self.__tables = KociembaTables
+
+    def set_cube(self, cube):
+        self.__cube = copy.deepcopy(cube)
 
     def solve(self) -> Tuple[int, str]:
         """A function to solve the cube with Kociemba's algorithm (two-phase)"""
@@ -30,7 +33,7 @@ class Kociemba:
         self.__cube.twist_by_notation(phase1[1])
         if self.__cube.is_solved or phase1[0] <= 0:
             return phase1
-        print(f"Current steps: {phase1[1]}")
+        print(f"\nCurrent steps: {phase1[1]}")
         phase2 = self.__solve_phase(2)
         return (phase1[0]+phase2[0], phase1[1] + " " + phase2[1])
 

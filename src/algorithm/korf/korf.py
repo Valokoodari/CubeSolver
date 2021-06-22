@@ -18,15 +18,19 @@ class Korf:
         self.__tables = KorfTables()
         self.__checked = 0
         self.__skipped = 0
-        if "SKIP_TABLES" not in os.environ:
+        if "NO_TABLES" not in os.environ:
             try:    # Try to load already generated pruning tables
                 self.__tables.load_tables()
             except FileNotFoundError:   # Generate the pruning tables
                 print("\nGenerating pruning tables...\n")
                 self.generate_tables()
+                self.__tables.save_tables()
         self.__min_distance = self.__tables.get_distance(
             self.coordinate(self.__cube)
         )
+
+    def set_cube(self, cube):
+        self.__cube = copy.deepcopy(cube)
 
     def solve(self) -> Tuple[int, str]:
         """A function to solve the cube with Korf's algorithm (IDA*)."""
@@ -38,10 +42,10 @@ class Korf:
             if estimate < 0:
                 estimate = 21
             result = self.__search([], self.__cube, depth, 0, estimate)
-            if result[0] != -1:
-                return result
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}, " +
                   f"(pruned: {self.__skipped:,}+)    ")
+            if result[0] != -1:
+                return result
 
         return (-1, "")
 
@@ -79,7 +83,7 @@ class Korf:
         iterating through search depths from 0 to 20."""
         cube = Cube()
 
-        for depth in range(0, 21):
+        for depth in range(0, 6):
             print(f"Generation Depth: {depth}")
             self.generation_search([], cube, depth, 0)
             if self.__tables.is_complete:

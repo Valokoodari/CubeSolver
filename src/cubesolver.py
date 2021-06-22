@@ -3,7 +3,6 @@
 The purpose for this program is to compare different methods of solving the
 Rubik's cube in terms of turns and time required."""
 
-import copy
 import time
 
 from src.puzzle.cube import Cube
@@ -18,7 +17,11 @@ class CubeSolver:
     notations is valid. And the UI itself can be started by running the method
     start."""
     def __init__(self):
+        print("Initializing...", end="", flush=True)
         self.__cube = Cube()
+        self.__kociemba = Kociemba(self.__cube)
+        self.__korf = Korf(self.__cube)
+        print(" Done.\n")
 
     def __choose_method(self):
         print("\nAvailable solving methods:")
@@ -37,24 +40,27 @@ class CubeSolver:
                 print("Not implemented yet.")
             elif method == "1":
                 start_time = time.time()
-                solution = Kociemba(copy.deepcopy(self.__cube)).solve()
+                self.__kociemba.set_cube(self.__cube)
+                solution = self.__kociemba.solve()
                 total_time = time.time()-start_time
                 if solution[0] < 0:
-                    print(f"Couldn't find a solution in {total_time:.3f}" +
+                    print(f"\nCouldn't find a solution in {total_time:.3f}" +
                           " seconds.")
                 else:
-                    print(f"Found solution: {solution[1]} in {total_time:.3f}" +
-                          " seconds.")
+                    print(f"\nFound solution: {solution[1]} " +
+                          f"in {total_time:.3f} seconds.")
             elif method == "2":
+                print()
                 start_time = time.time()
-                solution = Korf(copy.deepcopy(self.__cube)).solve()
+                self.__korf.set_cube(self.__cube)
+                solution = self.__korf.solve()
                 total_time = time.time()-start_time
                 if solution[0] < 0:
-                    print(f"Couldn't find a solution in {total_time:3f}" +
+                    print(f"\nCouldn't find a solution in {total_time:3f}" +
                           " seconds.")
                 else:
-                    print(f"Found solution: {solution[1]} in {total_time:.3f}" +
-                          " seconds.")
+                    print(f"\nFound solution: {solution[1]} " +
+                          f"in {total_time:.3f} seconds.")
             else:
                 print("Invalid option")
 
