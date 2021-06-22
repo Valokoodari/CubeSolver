@@ -58,7 +58,7 @@ class Cube:
     ]
 
     def __init__(self):
-        self.__faces = [CubeFace(3, i) for i in range(6)]
+        self.__faces = [CubeFace(i) for i in range(6)]
 
     def twist(self, face_number: int, clockwise: bool = True) -> None:
         """A method to twist a single layer of the cube 90 degress clockwise or
