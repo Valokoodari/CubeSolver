@@ -29,7 +29,8 @@ class Korf:
             self.coordinate(self.__cube)
         )
 
-    def set_cube(self, cube):
+    def set_cube(self, cube) -> None:
+        """A function to copy a cube into this class."""
         self.__cube = copy.deepcopy(cube)
 
     def solve(self) -> Tuple[int, str]:
