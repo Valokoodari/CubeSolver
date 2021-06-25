@@ -55,8 +55,7 @@ class Kociemba:
         print(f"\n-- Phase {phase} --")
         for depth in range(1, 13 if phase == 1 else 19):
             self.__checked, self.__skipped = 0, 0
-            result = self.__search(phase, [], copy.deepcopy(self.__cube),
-                                   depth, 0)
+            result = self.__search(phase, [], copy.deepcopy(self.__cube), depth)
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}, " +
                   f"(pruned: {self.__skipped:,}+)    ")
             if result[0] >= 0:
@@ -64,7 +63,7 @@ class Kociemba:
         return (-1, "")
 
     def __search(self, phase, notes: List[str], cube: Cube,
-                 depth: int, distance: int) -> Tuple[int, str]:
+                 depth: int) -> Tuple[int, str]:
         """A function to actually perform the search to the current search depth
         by using recursion.
 
@@ -78,7 +77,7 @@ class Kociemba:
         if self.__checked % 10000 == 0:
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}+ " +
                   f"(pruned: {self.__skipped:,}+)", end="\r")
-        if depth <= distance:
+        if depth <= len(notes):
             if phase == 1 and cube.is_domino or cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
@@ -90,7 +89,7 @@ class Kociemba:
             new_cube.twist_by_notation(move)
             self.__checked += 1
             result = self.__search(phase, notes + [move], new_cube,
-                                   depth, distance + 1)
+                                   depth)
             if result[0] > 0:
                 return result
         return (-1, "")

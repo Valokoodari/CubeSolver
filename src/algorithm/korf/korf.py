@@ -42,7 +42,7 @@ class Korf:
             self.__checked, self.__skipped = 0, 0
             if estimate < 0:
                 estimate = 21
-            result = self.__search([], self.__cube, depth, 0, estimate)
+            result = self.__search([], self.__cube, depth, estimate)
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}, " +
                   f"(pruned: {self.__skipped:,}+)    ")
             if result[0] != -1:
@@ -51,14 +51,14 @@ class Korf:
         return (-1, "")
 
     def __search(self, notes: List[str], cube: Cube, depth: int,
-                 distance: int, estimate: int) -> Tuple[int, str]:
+                 estimate: int) -> Tuple[int, str]:
         """A function to actually perform the search to the current search depth
         by using recursion. Also contains the pruning if the minimum distance
         increases"""
         if self.__checked % 10000 == 0:
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}+, " +
                   f"(pruned: {self.__skipped:,}+)", end="\r")
-        if distance >= depth:
+        if len(notes) >= depth:
             if cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
@@ -73,8 +73,7 @@ class Korf:
                 self.__skipped += 1
                 continue
             self.__checked += 1
-            result = self.__search(notes + [move], new_cube, depth,
-                                   distance + 1, estimate)
+            result = self.__search(notes + [move], new_cube, depth, estimate)
             if result[0] > 0:
                 return result
         return (-1, "")

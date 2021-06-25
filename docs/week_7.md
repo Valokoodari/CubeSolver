@@ -8,8 +8,9 @@
 | 22.6. | 2        | More preparations for the demo.
 |       | 2        | The demo session
 |       | 3        | 32-bit integer based CubeFace
-| 25.6. | 2        | Update documentation  
-| Total | 11.5     |
+| 25.6. | 2        | Update documentation
+|       | 1.5      | Solve top cross with the simple algorithm
+| Total | 13       |
 
 ## Progress on the program  
 - A way to run the program without generating the pruning tables.  
