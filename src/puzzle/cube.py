@@ -145,13 +145,23 @@ class Cube:
     @property
     def corners(self) -> List[str]:
         """List of all of the corners of the cube ordered by the position in
+        order of the corner_order property of this class and oriented to be
+        easier to recognize."""
+        corners = self.unoriented_corners
+        for i, corner in enumerate(corners):
+            if corner not in self.corner_coords:
+                corners[i] = self.__fix_corner_name(corner)
+
+        return corners
+
+    @property
+    def unoriented_corners(self) -> List[str]:
+        """List of all of the corners of the cube ordered by the position in
         order of the corner_order property of this class."""
         corners = [""]*8
         for i, corner in enumerate(self.corner_order):
             for face, facelet in self.corner_coords[corner]:
                 corners[i] += self.__faces[face].get_facelet(facelet)
-            if corners[i] not in self.corner_coords:
-                corners[i] = self.__fix_corner_name(corners[i])
 
         return corners
 

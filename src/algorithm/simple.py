@@ -8,27 +8,29 @@ from src.puzzle.cube import Cube
 
 
 class Simple:
+    __sides = ["R", "F", "L", "B"]
     """A class for solving a Rubik's cube with a lot of moves."""
     def __init__(self, cube: Cube):
         self.__cube = cube
+        self.__moves = []
 
     def set_cube(self, cube) -> None:
         """A function to copy a cube into this class."""
         self.__cube = copy.deepcopy(cube)
+        self.__moves = []
 
     def solve(self) -> Tuple[int, str]:
         """A function to solve the cube step by step, layer by layer."""
         if self.__cube.is_solved:
             return (0, "")
-        moves = []
 
-        moves += self.__top_cross()
-        moves += self.__top_corners()
+        self.__moves += self.__top_cross()
+        self.__top_corners()
 
-        if len(moves) == 0:
+        if len(self.__moves) == 0:
             return (-1, "")
 
-        return (len(moves), " ".join(moves))
+        return (len(self.__moves), " ".join(self.__moves))
 
     def __top_edges(self) -> List[str]:
         return [edge if "U" in edge else "--"
@@ -45,11 +47,11 @@ class Simple:
         return moves
 
     def __top_cross_clear_top(self) -> List[str]:
-        moves, sides = [], ["R", "F", "L", "B"]
+        moves = []
         for i in range(4):
             if "U" in self.__top_edges()[i]:
                 moves += self.__top_cross_rotate_bottom(i+4)
-                moves.append(sides[i] + "2")
+                moves.append(self.__sides[i] + "2")
                 self.__cube.twist_by_notation(moves[-1])
         return moves
 
@@ -66,12 +68,12 @@ class Simple:
         return moves
 
     def __top_cross_orient(self) -> List[str]:
-        moves, sides, edges = [], ["R", "F", "L", "B"], self.__top_edges()
+        moves, edges = [], self.__top_edges()
         for i in range(4):
             if edges[i+4][1] == "U":
-                moves.append(sides[i])
+                moves.append(self.__sides[i])
                 moves.append("D'")
-                moves.append(sides[(i+1) % 4])
+                moves.append(self.__sides[(i+1) % 4])
                 moves.append("D")
         self.__cube.twist_by_notation(" ".join(moves))
         return moves
@@ -93,6 +95,39 @@ class Simple:
             self.__cube.twist_by_notation(moves[-1])
         return moves
 
-    def __top_corners(self) -> List[str]:
+    def __top_corners(self) -> None:
         """A function to solve the top corners of a cube."""
-        return []
+        self.__clear_top_corners()
+        self.__place_top_corners()
+
+    def __clear_top_corners(self) -> None:
+        for i in range(4):
+            if "U" in self.__cube.corners[i]:
+                self.__top_corners_rotate_bottom(i+4)
+                moves = [self.__sides[i]+"'", "D'", self.__sides[i], "D"]
+                self.__cube.twist_by_notation(" ".join(moves))
+                self.__moves += moves
+
+    def __place_top_corners(self) -> None:
+        for i, corner in enumerate(Cube.corner_order[:4]):
+            self.__top_corners_rotate_bottom(4+i, corner)
+            moves, side = [], self.__sides[i]
+            if self.__cube.unoriented_corners[4+i][0] == "U":
+                moves = [side+"'", "D2", side, "D", side+"'", "D'", side]
+            elif self.__cube.unoriented_corners[4+i][1] == "U":
+                moves = ["D'", side+"'", "D", side]
+            else:
+                moves = [side+"'", "D'", side]
+            self.__cube.twist_by_notation(" ".join(moves))
+            self.__moves += moves
+
+    def __top_corners_rotate_bottom(self, corner: int,
+                                    target: str = None) -> None:
+        while True:
+            if "U" not in self.__cube.corners[corner] and target is None:
+                break
+            if target == self.__cube.corners[corner]:
+                break
+            print(target, self.__cube.corners[corner])
+            self.__moves.append("D")
+            self.__cube.twist_by_notation(self.__moves[-1])
