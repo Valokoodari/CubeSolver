@@ -6,6 +6,7 @@ Rubik's cube in terms of turns and time required."""
 import time
 
 from src.puzzle.cube import Cube
+from src.algorithm.simple import Simple
 from src.algorithm.korf.korf import Korf
 from src.algorithm.kociemba.kociemba import Kociemba
 
@@ -19,6 +20,7 @@ class CubeSolver:
     def __init__(self):
         print("Initializing...", end="", flush=True)
         self.__cube = Cube()
+        self.__simple = Simple(self.__cube)
         self.__kociemba = Kociemba(self.__cube)
         self.__korf = Korf(self.__cube)
         print(" Done.\n")
@@ -36,33 +38,29 @@ class CubeSolver:
             if method in ["r", "q"]:
                 print()
                 break
+
+            start_time = time.time()
+            solution = (-1, "")
             if method == "0":
-                print("Not implemented yet.")
+                self.__simple.set_cube(self.__cube)
+                solution = self.__simple.solve()
             elif method == "1":
-                start_time = time.time()
                 self.__kociemba.set_cube(self.__cube)
                 solution = self.__kociemba.solve()
-                total_time = time.time()-start_time
-                if solution[0] < 0:
-                    print(f"\nCouldn't find a solution in {total_time:.3f}" +
-                          " seconds.")
-                else:
-                    print(f"\nFound solution: {solution[1]} " +
-                          f"in {total_time:.3f} seconds.")
             elif method == "2":
                 print()
-                start_time = time.time()
                 self.__korf.set_cube(self.__cube)
                 solution = self.__korf.solve()
-                total_time = time.time()-start_time
-                if solution[0] < 0:
-                    print(f"\nCouldn't find a solution in {total_time:3f}" +
-                          " seconds.")
-                else:
-                    print(f"\nFound solution: {solution[1]} " +
-                          f"in {total_time:.3f} seconds.")
             else:
                 print("Invalid option")
+                return
+            total_time = time.time()-start_time
+            if solution[0] < 0:
+                print(f"\nCouldn't find a solution in {total_time:.3f}" +
+                      " seconds.")
+            else:
+                print(f"\nFound solution: {solution[1]} with {solution[0]} " +
+                      f"turns in {total_time:.3f} seconds.")
 
     def __play(self):
         print("\nMoves should be given with the basic cube notation.")
