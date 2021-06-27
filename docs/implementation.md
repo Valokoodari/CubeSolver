@@ -47,7 +47,7 @@ without pruning would be `18^12 + 18^11 + 18^10 +  ... + 18^1` and
   - There's no pruning tables at all with Kociemba's algorithm as I couldn't
     figure out how to calculate the symmetries.  
   - There are only partial pruning tables for Korf's algorithm as I couldn't
-    get the generation fast enough.  
+    get the generation fast enough. Complete tables would help by a lot.  
 - A GUI would probably make the program a bit more accessible.  
 - Even the binaries built with pyinstaller still require some external libraries
   to be installed.  
@@ -59,6 +59,10 @@ without pruning would be `18^12 + 18^11 + 18^10 +  ... + 18^1` and
   - Now I would probably choose Rust (even though I'm more familiar with C++).
 - The data structure of the cube should probably be different for each 
   algorithm to achieve the best performance.
+- The solution given by the simple algorithm could be shortened quite easily.
+  For example the notation D D D D is equivalent to not doing anything.
+- When running from a binary, the pruning tables are saved to /tmp/
+- Currently the pruning tables are too large for GitHub (100 MB limit).
 
 
 ## Sources:

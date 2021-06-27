@@ -14,8 +14,9 @@ solved state.
 
 ### Important!
 The current version of this program only generates the pruning tables of Korf's 
-algorithm to depth 6 and doesn't have any pruning tables at all for the 
-Kociemba's algorithm.
+algorithm to depth 7 and doesn't have any pruning tables at all for the 
+Kociemba's algorithm. Generating the tables to depth 7 takes under an hour on 
+an AMD Ryzen 7 3800X.
 
 ## Documentation  
 - [Project Specification](docs/specification.md)  
@@ -35,9 +36,8 @@ Kociemba's algorithm.
 
 ### Run the program
 ```
-NO_TABLES=1 ./run.sh
+./run.sh
 ```
-(or just `./run.sh` which will take a long time to generate the partial tables.)
 
 ### Run tests and check style
 ```

@@ -25,9 +25,6 @@ class Korf:
                 print("\nGenerating pruning tables...\n")
                 self.generate_tables()
                 self.__tables.save_tables()
-        self.__min_distance = self.__tables.get_distance(
-            self.coordinate(self.__cube)
-        )
 
     def set_cube(self, cube) -> None:
         """A function to copy a cube into this class."""
@@ -73,7 +70,7 @@ class Korf:
                 if estimate < new_estimate:
                     self.__skipped += 1
                     continue
-                estimate = new_estimate
+                estimate = new_estimate + 1
             self.__checked += 1
             result = self.__search(notes + [move], new_cube, depth, estimate-1)
             if result[0] > 0:
@@ -85,7 +82,7 @@ class Korf:
         iterating through search depths from 0 to 20."""
         cube = Cube()
 
-        for depth in range(0, 7):   # FIXME: Should be 0..20 range(0, 21)
+        for depth in range(0, 8):   # FIXME: Should be 0..20 range(0, 21)
             print(f"Generation Depth: {depth}")
             self.generation_search([], cube, depth, 0)
             if self.__tables.is_complete:
@@ -101,6 +98,7 @@ class Korf:
         Unfortunately this function currently takes about 10^13 years with depth
         20 to finish on a modern desktop computer."""
         # FIXME: Optimize to run in less than a week.
+        # FIXME: Pruning while generating doesn't seem to work correctly.
         if distance >= depth:
             self.__tables.set_distance(self.coordinate(cube), distance)
             return

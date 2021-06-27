@@ -49,6 +49,17 @@ Depth:  6, checked: 1,505,067, (pruned: 524,442+)
 
 Found solution: U2 D2 L2 R2 F2 B2 with 6 turns in 332.019 seconds.
 ```
+Korf's algorithm (depth 7 tables):
+```
+Depth:  1, checked: 18, (pruned: 0+)    
+Depth:  2, checked: 261, (pruned: 81+)    
+Depth:  3, checked: 3,447, (pruned: 1,269+)    
+Depth:  4, checked: 45,105, (pruned: 16,959+)    
+Depth:  5, checked: 582,282, (pruned: 229,626+)    
+Depth:  6, checked: 1,332,828, (pruned: 534,303+)    
+
+Found solution: U2 D2 L2 R2 F2 B2 with 6 turns in 323.208 seconds.
+```
 
 ### Random 4 turn scramble
 Scramble: `U F' R2 L'`  
