@@ -12,7 +12,8 @@
 |       | 1.5      | Solve top cross with the simple algorithm
 | 26.6. | 1.5      | Solve top corners with the simple algorithm
 |       | 3        | Completely solve the cube with the simple algorithm
-| Total | 17.5     |
+|       | 3        | Manual testing and fixing bugs.
+| Total | 20.5     |
 
 ## Progress on the program  
 - A way to run the program without generating the pruning tables.  

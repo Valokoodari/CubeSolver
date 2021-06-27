@@ -6,7 +6,7 @@
 
 ## Required moves  
 - Me (a human): usually 100-150 moves  
-- Simple algorithm: (not yet implemented)  
+- Simple algorithm: about 120-250 moves which could be simplified  
 - Kociemba's algorithm: at most 30 moves  
 - Korf's algorithm: at most 20 moves  
 
@@ -24,7 +24,7 @@
 ![Table of the checked orientations per depth to calculate the branching factors.](img/branching.png)
 
 ### Worst cases (at 200,000 positions per second)
-My desktop computer with an AMD Ryzen 3800X at 4.35 GHz currently calculates
+My desktop computer with an AMD Ryzen 7 3800X at 4.35 GHz currently calculates
 about 17,000 positions per second without multithreading. But I believe that
 the program could be optimized to be at least 12 times faster. And that is why
 I chose 200,000 positions per second as the base.  
@@ -57,6 +57,8 @@ without pruning would be `18^12 + 18^11 + 18^10 +  ... + 18^1` and
   - I also thought that testing would take too much time with C++ and I didn't
     know Rust when this course started.  
   - Now I would probably choose Rust (even though I'm more familiar with C++).
+- The data structure of the cube should probably be different for each 
+  algorithm to achieve the best performance.
 
 
 ## Sources:

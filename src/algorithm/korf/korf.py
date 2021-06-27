@@ -58,7 +58,7 @@ class Korf:
         if self.__checked % 10000 == 0:
             print(f"Depth: {depth:2d}, checked: {self.__checked:,}+, " +
                   f"(pruned: {self.__skipped:,}+)", end="\r")
-        if len(notes) >= depth:
+        if len(notes) >= depth or estimate <= 0:
             if cube.is_solved:
                 return (len(notes), " ".join(notes))
             return (-1, "")
@@ -69,11 +69,13 @@ class Korf:
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
             new_estimate = self.__tables.get_distance(self.coordinate(cube))
-            if estimate != -1 and estimate < new_estimate:
-                self.__skipped += 1
-                continue
+            if new_estimate != -1:
+                if estimate < new_estimate:
+                    self.__skipped += 1
+                    continue
+                estimate = new_estimate
             self.__checked += 1
-            result = self.__search(notes + [move], new_cube, depth, estimate)
+            result = self.__search(notes + [move], new_cube, depth, estimate-1)
             if result[0] > 0:
                 return result
         return (-1, "")
@@ -83,7 +85,7 @@ class Korf:
         iterating through search depths from 0 to 20."""
         cube = Cube()
 
-        for depth in range(0, 6):
+        for depth in range(0, 7):   # FIXME: Should be 0..20 range(0, 21)
             print(f"Generation Depth: {depth}")
             self.generation_search([], cube, depth, 0)
             if self.__tables.is_complete:
@@ -108,7 +110,7 @@ class Korf:
             new_cube = copy.deepcopy(cube)
             new_cube.twist_by_notation(move)
             estimate = self.__tables.get_distance(self.coordinate(new_cube))
-            if estimate != -1 and estimate < distance:
+            if estimate != -1 and estimate-depth < distance:
                 # print(f"Depth: {depth}, distance: {distance}, move: {move}")
                 continue
             self.generation_search(notes+[move], new_cube, depth, distance+1)

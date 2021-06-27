@@ -12,9 +12,15 @@ should find a solution which is at least close to the optimal solution.
 Any valid state of the 3x3x3 Rubik's cube is at most 20 moves away from the 
 solved state.
 
+### Important!
+The current version of this program only generates the pruning tables of Korf's 
+algorithm to depth 6 and doesn't have any pruning tables at all for the 
+Kociemba's algorithm.
+
 ## Documentation  
 - [Project Specification](docs/specification.md)  
 - [Implementation document](docs/implementation.md)  
+- [Performance comparison](docs/comparison.md)  
 - [Testing document](docs/testing.md)  
 - [User guide](docs/guide.md)  
 
@@ -25,11 +31,13 @@ solved state.
 - [Week 4](docs/week_4.md)  
 - [Week 5](docs/week_5.md)  
 - [Week 6](docs/week_6.md)  
+- [Week 7](docs/week_7.md)  
 
 ### Run the program
 ```
-./run.sh
+NO_TABLES=1 ./run.sh
 ```
+(or just `./run.sh` which will take a long time to generate the partial tables.)
 
 ### Run tests and check style
 ```
